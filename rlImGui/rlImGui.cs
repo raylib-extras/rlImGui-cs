@@ -1,4 +1,17 @@
-﻿using System;
+﻿/*******************************************************************************************
+*
+*   raylib-extras [ImGui] example - Simple Integration
+*
+*	This is a simple ImGui Integration
+*	It is done using C++ but with C style code
+*	It can be done in C as well if you use the C ImGui wrapper
+*	https://github.com/cimgui/cimgui
+*
+*   Copyright (c) 2021 Jeffery Myers
+*
+********************************************************************************************/
+
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 
