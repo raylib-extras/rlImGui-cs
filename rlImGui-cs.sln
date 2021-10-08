@@ -8,7 +8,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "simple_example", "simple_ex
 		{CE0DE109-5367-4089-BE22-C4381C635D6E} = {CE0DE109-5367-4089-BE22-C4381C635D6E}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rlImGui", "rlImGui\rlImGui.csproj", "{CE0DE109-5367-4089-BE22-C4381C635D6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "rlImGui", "rlImGui\rlImGui.csproj", "{CE0DE109-5367-4089-BE22-C4381C635D6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "editor_example", "editor_example\editor_example.csproj", "{A9E4311D-D0E1-4434-884E-38CE2651F8D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +26,10 @@ Global
 		{CE0DE109-5367-4089-BE22-C4381C635D6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE0DE109-5367-4089-BE22-C4381C635D6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE0DE109-5367-4089-BE22-C4381C635D6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9E4311D-D0E1-4434-884E-38CE2651F8D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9E4311D-D0E1-4434-884E-38CE2651F8D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9E4311D-D0E1-4434-884E-38CE2651F8D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9E4311D-D0E1-4434-884E-38CE2651F8D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
