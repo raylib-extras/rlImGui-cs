@@ -14,6 +14,7 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using System.Runtime.InteropServices;
 
 using Raylib_cs;
 using ImGuiNET;
@@ -248,6 +249,8 @@ namespace rlImGui_cs
             Rlgl.rlEnd();
         }
 
+        private delegate void Callback(ImDrawListPtr list, ImDrawCmdPtr cmd);
+
         private static void RenderData()
         {
             Rlgl.rlDrawRenderBatchActive();
@@ -268,7 +271,8 @@ namespace rlImGui_cs
                     EnableScissor(cmd.ClipRect.X - data.DisplayPos.X, cmd.ClipRect.Y - data.DisplayPos.Y, cmd.ClipRect.Z - (cmd.ClipRect.X - data.DisplayPos.X), cmd.ClipRect.W - (cmd.ClipRect.Y - data.DisplayPos.Y));
                     if (cmd.UserCallback != IntPtr.Zero)
                     {
-                        //  cmd.UserCallback(commandList, &cmd);
+                        Callback cb = Marshal.GetDelegateForFunctionPointer<Callback>(cmd.UserCallback);
+                        cb(commandList, cmd);
                         idxOffset += cmd.ElemCount;
                         continue;
                     }
