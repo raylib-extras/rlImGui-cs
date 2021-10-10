@@ -6,6 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="resources\parrots.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="resources\parrots.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ImGui.NET" Version="1.78.0" />
     <PackageReference Include="Raylib-cs" Version="3.7.0.1" />
   </ItemGroup>
