@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "editor_example": {
+      "commandName": "Project",
+      "workingDirectory": "$(SolutionDir)\\"
+    }
+  }
+}
