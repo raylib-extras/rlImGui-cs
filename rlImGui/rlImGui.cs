@@ -138,8 +138,8 @@ namespace rlImGui_cs
             }
 
             io.MouseDown[0] = Raylib.IsMouseButtonDown(MouseButton.MOUSE_LEFT_BUTTON);
-            io.MouseDown[1] = Raylib.IsMouseButtonDown(MouseButton.MOUSE_LEFT_BUTTON);
-            io.MouseDown[2] = Raylib.IsMouseButtonDown(MouseButton.MOUSE_LEFT_BUTTON);
+            io.MouseDown[1] = Raylib.IsMouseButtonDown(MouseButton.MOUSE_RIGHT_BUTTON);
+            io.MouseDown[2] = Raylib.IsMouseButtonDown(MouseButton.MOUSE_MIDDLE_BUTTON);
 
             if (Raylib.GetMouseWheelMove() > 0)
                 io.MouseWheel += 1;
