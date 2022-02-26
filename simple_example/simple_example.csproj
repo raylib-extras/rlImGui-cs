@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>SimpleExample</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Raylib-cs" Version="3.7.0.1" />
+    <PackageReference Include="Raylib-cs" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>

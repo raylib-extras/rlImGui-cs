@@ -65,19 +65,24 @@ namespace rlImGui_cs
             MouseCursorMap[ImGuiMouseCursor.NotAllowed] = MouseCursor.MOUSE_CURSOR_NOT_ALLOWED;
         }
 
-        public static void ReloadFonts()
+        public static unsafe void ReloadFonts()
         {
             ImGui.SetCurrentContext(ImGuiContext);
             ImGuiIOPtr io = ImGui.GetIO();
 
-            IntPtr pixels;
             int width, height, bytesPerPixel;
-            io.Fonts.GetTexDataAsRGBA32(out pixels, out width, out height, out bytesPerPixel);
+            io.Fonts.GetTexDataAsRGBA32(out byte* pixels, out width, out height, out bytesPerPixel);
 
-            Image image = Raylib.GenImageColor(width, height, Color.BLANK);
+            Image image = new Image
+            {
+                data = pixels,
+                width = width,
+                height = height,
+                mipmaps = 1,
+                format = PixelFormat.PIXELFORMAT_UNCOMPRESSED_R8G8B8A8,
+            };
 
             FontTexture = Raylib.LoadTextureFromImage(image);
-            Raylib.UpdateTexture(FontTexture, pixels);
 
             io.Fonts.SetTexID(new IntPtr(FontTexture.id));
         }
@@ -89,8 +94,8 @@ namespace rlImGui_cs
             ImGui.SetCurrentContext(ImGuiContext);
             var fonts = ImGui.GetIO().Fonts;
             ImGui.GetIO().Fonts.AddFontDefault();
-            
-             ImGuiIOPtr io = ImGui.GetIO();
+
+            ImGuiIOPtr io = ImGui.GetIO();
             io.KeyMap[(int)ImGuiKey.Tab] = (int)KeyboardKey.KEY_TAB;
             io.KeyMap[(int)ImGuiKey.LeftArrow] = (int)KeyboardKey.KEY_LEFT;
             io.KeyMap[(int)ImGuiKey.RightArrow] = (int)KeyboardKey.KEY_RIGHT;
@@ -120,7 +125,7 @@ namespace rlImGui_cs
             ImGuiIOPtr io = ImGui.GetIO();
 
             io.DisplaySize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
-            io.DisplayFramebufferScale = new Vector2(1,1);
+            io.DisplayFramebufferScale = new Vector2(1, 1);
             io.DeltaTime = Raylib.GetFrameTime();
 
             io.KeyCtrl = Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT_CONTROL) || Raylib.IsKeyDown(KeyboardKey.KEY_LEFT_CONTROL);
@@ -163,7 +168,7 @@ namespace rlImGui_cs
 
                         if ((io.ConfigFlags & ImGuiConfigFlags.NoMouseCursorChange) == 0)
                         {
-        
+
                             if (!MouseCursorMap.ContainsKey(imgui_cursor))
                                 Raylib.SetMouseCursor(MouseCursor.MOUSE_CURSOR_DEFAULT);
                             else
@@ -178,7 +183,7 @@ namespace rlImGui_cs
         private static void FrameEvents()
         {
             ImGuiIOPtr io = ImGui.GetIO();
-            
+
             foreach (KeyboardKey key in Enum.GetValues(typeof(KeyboardKey)))
             {
                 io.KeysDown[(int)key] = Raylib.IsKeyDown(key);
@@ -210,7 +215,7 @@ namespace rlImGui_cs
         private static void TriangleVert(ImDrawVertPtr idx_vert)
         {
             byte[] c = BitConverter.GetBytes(idx_vert.col);
-    
+
             Rlgl.rlColor4ub(c[0], c[1], c[2], c[3]);
 
             Rlgl.rlTexCoord2f(idx_vert.uv.X, idx_vert.uv.Y);
@@ -223,14 +228,14 @@ namespace rlImGui_cs
             if (texturePtr != IntPtr.Zero)
                 textureId = (uint)texturePtr.ToInt32();
 
-            Rlgl.rlBegin(Rlgl.RL_TRIANGLES);
+            Rlgl.rlBegin(DrawMode.TRIANGLES);
             Rlgl.rlSetTexture(textureId);
 
             for (int i = 0; i <= (count - 3); i += 3)
             {
                 if (Rlgl.rlCheckRenderBatchLimit(3))
                 {
-                    Rlgl.rlBegin(Rlgl.RL_TRIANGLES);
+                    Rlgl.rlBegin(DrawMode.TRIANGLES);
                     Rlgl.rlSetTexture(textureId);
                 }
 
@@ -258,7 +263,7 @@ namespace rlImGui_cs
 
             var data = ImGui.GetDrawData();
 
-            for(int l = 0; l <  data.CmdListsCount; l++)
+            for (int l = 0; l < data.CmdListsCount; l++)
             {
                 uint idxOffset = 0;
 

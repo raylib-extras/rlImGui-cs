@@ -84,7 +84,7 @@ namespace editor_example
             Raylib.BeginMode3D(Camera);
 
             // grid of cube trees on a plane to make a "world"
-            Raylib.DrawPlane(new Vector3(0, 0, 0 ), new Vector2(50, 50), Color.BEIGE); // simple world plane
+            Raylib.DrawPlane(new Vector3(0, 0, 0), new Vector2(50, 50), Color.BEIGE); // simple world plane
             float spacing = 4;
             int count = 5;
 
@@ -92,12 +92,12 @@ namespace editor_example
             {
                 for (float z = -count * spacing; z <= count * spacing; z += spacing)
                 {
-                    Vector3 pos = new Vector3( x, 0.5f, z );
-                    Vector3 min = new Vector3( x - 0.5f, 0, z - 0.5f );
-                    Vector3 max = new Vector3( x + 0.5f, 1, z + 0.5f );
+                    Vector3 pos = new Vector3(x, 0.5f, z);
+                    Vector3 min = new Vector3(x - 0.5f, 0, z - 0.5f);
+                    Vector3 max = new Vector3(x + 0.5f, 1, z + 0.5f);
 
-                    Raylib.DrawCubeTexture(GridTexture, new Vector3(x, 1.5f, z ), 1, 1, 1, Color.GREEN);
-                    Raylib.DrawCubeTexture(GridTexture, new Vector3(x, 0.5f, z ), 0.25f, 1, 0.25f, Color.BROWN);
+                    Raylib.DrawCubeTexture(GridTexture, new Vector3(x, 1.5f, z), 1, 1, 1, Color.GREEN);
+                    Raylib.DrawCubeTexture(GridTexture, new Vector3(x, 0.5f, z), 0.25f, 1, 0.25f, Color.BROWN);
                 }
             }
 
