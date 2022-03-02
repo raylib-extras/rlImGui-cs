@@ -224,6 +224,9 @@ namespace rlImGui_cs
 
         private static void RenderTriangles(uint count, uint indexStart, ImVector<ushort> indexBuffer, ImPtrVector<ImDrawVertPtr> vertBuffer, IntPtr texturePtr)
         {
+            if (count < 3)
+                return;
+
             uint textureId = 0;
             if (texturePtr != IntPtr.Zero)
                 textureId = (uint)texturePtr.ToInt32();
