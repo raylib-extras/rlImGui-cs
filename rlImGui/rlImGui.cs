@@ -268,8 +268,6 @@ namespace rlImGui_cs
 
             for (int l = 0; l < data.CmdListsCount; l++)
             {
-                uint idxOffset = 0;
-
                 ImDrawListPtr commandList = data.CmdListsRange[l];
 
                 for (int cmdIndex = 0; cmdIndex < commandList.CmdBuffer.Size; cmdIndex++)
@@ -281,12 +279,10 @@ namespace rlImGui_cs
                     {
                         Callback cb = Marshal.GetDelegateForFunctionPointer<Callback>(cmd.UserCallback);
                         cb(commandList, cmd);
-                        idxOffset += cmd.ElemCount;
                         continue;
                     }
 
-                    RenderTriangles(cmd.ElemCount, idxOffset, commandList.IdxBuffer, commandList.VtxBuffer, cmd.TextureId);
-                    idxOffset += cmd.ElemCount;
+                    RenderTriangles(cmd.ElemCount, cmd.IdxOffset, commandList.IdxBuffer, commandList.VtxBuffer, cmd.TextureId);
 
                     Rlgl.rlDrawRenderBatchActive();
                 }
