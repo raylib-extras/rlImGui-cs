@@ -27,6 +27,7 @@ namespace rlImGui_cs
 
         private static ImGuiMouseCursor CurrentMouseCursor = ImGuiMouseCursor.COUNT;
         private static Dictionary<ImGuiMouseCursor, MouseCursor> MouseCursorMap;
+        private static KeyboardKey[] _keys;
 
         private static Texture2D FontTexture;
 
@@ -35,6 +36,8 @@ namespace rlImGui_cs
             MouseCursorMap = new Dictionary<ImGuiMouseCursor, MouseCursor>();
 
             FontTexture.id = 0;
+
+            _keys = (KeyboardKey[])Enum.GetValues(typeof(KeyboardKey));
 
             BeginInitImGui();
 
@@ -184,8 +187,7 @@ namespace rlImGui_cs
         {
             ImGuiIOPtr io = ImGui.GetIO();
 
-            foreach (KeyboardKey key in Enum.GetValues(typeof(KeyboardKey)))
-            {
+            foreach (var key in _keys) {
                 io.KeysDown[(int)key] = Raylib.IsKeyDown(key);
             }
 
