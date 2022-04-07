@@ -23,13 +23,11 @@ namespace rlImGui_cs
     {
         static void Main(string[] args)
         {
-
             Raylib.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT | ConfigFlags.FLAG_VSYNC_HINT);
             Raylib.InitWindow(1280, 800, "raylib-Extras-cs [ImGui] example - simple ImGui Demo");
             Raylib.SetTargetFPS(144);
 
             rlImGui.Setup(true);
-
 
             while (!Raylib.WindowShouldClose())
             {
