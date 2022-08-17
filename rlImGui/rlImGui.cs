@@ -126,7 +126,16 @@ namespace rlImGui_cs
         {
             ImGuiIOPtr io = ImGui.GetIO();
 
-            io.DisplaySize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
+            if (Raylib.IsWindowFullscreen())
+            {
+                int monitor = Raylib.GetCurrentMonitor();
+                io.DisplaySize = new Vector2(Raylib.GetMonitorWidth(monitor), Raylib.GetMonitorHeight(monitor));
+            }
+            else
+            {
+                io.DisplaySize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
+            }
+            
             io.DisplayFramebufferScale = new Vector2(1, 1);
             io.DeltaTime = Raylib.GetFrameTime();
 
