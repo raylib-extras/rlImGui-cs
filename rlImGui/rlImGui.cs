@@ -312,6 +312,7 @@ namespace rlImGui_cs
         public static void Shutdown()
         {
             Raylib.UnloadTexture(FontTexture);
+            ImGui.DestroyContext();
         }
 
         public static void Image(Texture2D image)
