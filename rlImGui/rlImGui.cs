@@ -224,10 +224,9 @@ namespace rlImGui_cs
 
         private static void TriangleVert(ImDrawVertPtr idx_vert)
         {
-            byte[] c = BitConverter.GetBytes(idx_vert.col);
-
-            Rlgl.rlColor4ub(c[0], c[1], c[2], c[3]);
-
+            Vector4 color = ImGui.ColorConvertU32ToFloat4(idx_vert.col);
+            
+            Rlgl.rlColor4f(color.X, color.Y, color.Z, color.W);
             Rlgl.rlTexCoord2f(idx_vert.uv.X, idx_vert.uv.Y);
             Rlgl.rlVertex2f(idx_vert.pos.X, idx_vert.pos.Y);
         }
