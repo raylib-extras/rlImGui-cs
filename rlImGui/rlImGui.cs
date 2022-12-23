@@ -135,7 +135,7 @@ namespace rlImGui_cs
             {
                 io.DisplaySize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
             }
-            
+
             io.DisplayFramebufferScale = new Vector2(1, 1);
             io.DeltaTime = Raylib.GetFrameTime();
 
@@ -219,13 +219,19 @@ namespace rlImGui_cs
         private static void EnableScissor(float x, float y, float width, float height)
         {
             Rlgl.rlEnableScissorTest();
-            Rlgl.rlScissor((int)x, Raylib.GetScreenHeight() - (int)(y + height), (int)width, (int)height);
+            Vector2 scale = Raylib.GetWindowScaleDPI();
+            Rlgl.rlScissor(
+                (int)(x * scale.X),
+                (int)(Rlgl.rlGetFramebufferHeight() - (y + height)),
+                (int)(width * scale.X),
+                (int)(height * scale.Y)
+            );
         }
 
         private static void TriangleVert(ImDrawVertPtr idx_vert)
         {
             Vector4 color = ImGui.ColorConvertU32ToFloat4(idx_vert.col);
-            
+
             Rlgl.rlColor4f(color.X, color.Y, color.Z, color.W);
             Rlgl.rlTexCoord2f(idx_vert.uv.X, idx_vert.uv.Y);
             Rlgl.rlVertex2f(idx_vert.pos.X, idx_vert.pos.Y);
