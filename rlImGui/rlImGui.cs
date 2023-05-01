@@ -1,4 +1,4 @@
-﻿/*******************************************************************************************
+/*******************************************************************************************
 *
 *   raylib-extras [ImGui] example - Simple Integration
 *
@@ -26,8 +26,8 @@ namespace rlImGui_cs
         internal static IntPtr ImGuiContext = IntPtr.Zero;
 
         private static ImGuiMouseCursor CurrentMouseCursor = ImGuiMouseCursor.COUNT;
-        private static Dictionary<ImGuiMouseCursor, MouseCursor> MouseCursorMap;
-        private static KeyboardKey[] KeyEnumMap;
+        private static Dictionary<ImGuiMouseCursor, MouseCursor> MouseCursorMap = new Dictionary<ImGuiMouseCursor, MouseCursor>();
+        private static KeyboardKey[]? KeyEnumMap;
 
         private static Texture2D FontTexture;
 
@@ -194,7 +194,7 @@ namespace rlImGui_cs
         {
             ImGuiIOPtr io = ImGui.GetIO();
 
-            foreach (KeyboardKey key in KeyEnumMap)
+            foreach (KeyboardKey key in KeyEnumMap!)
             {
                 io.KeysDown[(int)key] = Raylib.IsKeyDown(key);
             }
