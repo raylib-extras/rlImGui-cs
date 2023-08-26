@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using IconFonts;
 
 using Raylib_cs;
 using ImGuiNET;
@@ -97,6 +98,25 @@ namespace rlImGui_cs
             var fonts = ImGui.GetIO().Fonts;
             ImGui.GetIO().Fonts.AddFontDefault();
 
+            // remove this part if you don't want font awesome
+            unsafe
+            {
+                ImFontConfig icons_config = new ImFontConfig();
+                icons_config.MergeMode = 1;
+                icons_config.PixelSnapH = 1;
+                icons_config.FontDataOwnedByAtlas = 0;
+
+                ushort[] chars = new ushort[3];
+                chars[0] = FontAwesome6.IconMin;
+                chars[1] = FontAwesome6.IconMax;
+                chars[2] = 0;
+
+                ImFontPtr font;
+
+                fixed (ushort* c = chars)
+                    font = ImGui.GetIO().Fonts.AddFontFromFileTTF("resources/fa-solid-900.ttf", 11, &icons_config, new IntPtr(c));
+            }
+
             ImGuiIOPtr io = ImGui.GetIO();
             io.KeyMap[(int)ImGuiKey.Tab] = (int)KeyboardKey.KEY_TAB;
             io.KeyMap[(int)ImGuiKey.LeftArrow] = (int)KeyboardKey.KEY_LEFT;
@@ -135,7 +155,7 @@ namespace rlImGui_cs
             {
                 io.DisplaySize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
             }
-            
+
             io.DisplayFramebufferScale = new Vector2(1, 1);
             io.DeltaTime = Raylib.GetFrameTime();
 
@@ -225,7 +245,7 @@ namespace rlImGui_cs
         private static void TriangleVert(ImDrawVertPtr idx_vert)
         {
             Vector4 color = ImGui.ColorConvertU32ToFloat4(idx_vert.col);
-            
+
             Rlgl.rlColor4f(color.X, color.Y, color.Z, color.W);
             Rlgl.rlTexCoord2f(idx_vert.uv.X, idx_vert.uv.Y);
             Rlgl.rlVertex2f(idx_vert.pos.X, idx_vert.pos.Y);
