@@ -32,6 +32,8 @@ namespace rlImGui_cs
 
         private static Texture2D FontTexture;
 
+        private static IntPtr IconFontRanges = IntPtr.Zero;
+
         public static void Setup(bool darkTheme = true)
         {
             MouseCursorMap = new Dictionary<ImGuiMouseCursor, MouseCursor>();
@@ -102,19 +104,24 @@ namespace rlImGui_cs
             unsafe
             {
                 ImFontConfig icons_config = new ImFontConfig();
-                icons_config.MergeMode = 1;
-                icons_config.PixelSnapH = 1;
-                icons_config.FontDataOwnedByAtlas = 0;
+                icons_config.MergeMode = 0;                      // merge the glyph ranges into the default font
+                icons_config.PixelSnapH = 1;                     // don't try to render on partial pixels
+                icons_config.FontDataOwnedByAtlas = 0;           // the font atlas does not own this font data
 
-                ushort[] chars = new ushort[3];
-                chars[0] = FontAwesome6.IconMin;
-                chars[1] = FontAwesome6.IconMax;
-                chars[2] = 0;
+                ushort[] IconRanges = new ushort[3];
+                IconRanges[0] = FontAwesome6.IconMin;
+                IconRanges[1] = FontAwesome6.IconMax;
+                IconRanges[2] = 0;
 
-                ImFontPtr font;
+                fixed (ushort* range = &IconRanges[0])
+                {
+                    // this unmanaged memory must remain allocated for the entire run of rlImgui
+                    IconFontRanges = Marshal.AllocHGlobal(6);
+                    Buffer.MemoryCopy(range, IconFontRanges.ToPointer(), 6, 6);
+                    icons_config.GlyphRanges = (ushort*)IconFontRanges.ToPointer();
 
-                fixed (ushort* c = chars)
-                    font = ImGui.GetIO().Fonts.AddFontFromFileTTF("resources/fa-solid-900.ttf", 11, &icons_config, new IntPtr(c));
+                    ImGui.GetIO().Fonts.AddFontFromFileTTF("resources/fa-solid-900.ttf", 11, &icons_config);
+                }
             }
 
             ImGuiIOPtr io = ImGui.GetIO();
@@ -332,6 +339,11 @@ namespace rlImGui_cs
         {
             Raylib.UnloadTexture(FontTexture);
             ImGui.DestroyContext();
+
+            if (IconFontRanges != IntPtr.Zero)
+                Marshal.FreeHGlobal(IconFontRanges);
+
+            IconFontRanges = IntPtr.Zero;
         }
 
         public static void Image(Texture2D image)
