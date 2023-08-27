@@ -36,13 +36,7 @@ namespace rlImGui_cs
 
                 rlImGui.Begin();
                 ImGui.ShowDemoWindow();
-
-                ImGui.Begin("testWindow");
-                ImGui.TextUnformatted("This should have an arrow on the next line");
-                ImGui.TextUnformatted(IconFonts.FontAwesome6.ArrowDown);
-                ImGui.End();
                 rlImGui.End();
-
 
                 Raylib.EndDrawing();
             }
