@@ -48,7 +48,6 @@ namespace rlImGui_cs
         internal static bool rlImGuiIsAltDown() { return Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT_ALT) || Raylib.IsKeyDown(KeyboardKey.KEY_LEFT_ALT); }
         internal static bool rlImGuiIsSuperDown() { return Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT_SUPER) || Raylib.IsKeyDown(KeyboardKey.KEY_LEFT_SUPER); }
 
-
         public static void Setup(bool darkTheme = true)
         {
             MouseCursorMap = new Dictionary<ImGuiMouseCursor, MouseCursor>();
@@ -228,6 +227,19 @@ namespace rlImGui_cs
             io.Fonts.SetTexID(new IntPtr(FontTexture.id));
         }
 
+        unsafe internal static sbyte* rImGuiGetClipText(IntPtr userData)
+        {
+            return Raylib.GetClipboardText();
+        }
+
+        unsafe internal static void rlImGuiSetClipText(IntPtr userData, sbyte* text)
+        {
+            Raylib.SetClipboardText(text);
+        }
+
+        private unsafe delegate sbyte* GetClipTextCallback(IntPtr userData);
+        private unsafe delegate void SetClipTextCallback(IntPtr userData, sbyte* text);
+
         public static void EndInitImGui()
         {
             SetupMouseCursors();
@@ -277,9 +289,15 @@ namespace rlImGui_cs
             io.MousePos.X = 0;
             io.MousePos.Y = 0;
 
-            // TODO, hook up callbacks
-         //   io.SetClipboardTextFn = rlImGuiSetClipText;
-         //   io.GetClipboardTextFn = rlImGuiGetClipText;
+            // copy/paste callbacks
+            unsafe
+            {
+                GetClipTextCallback getClip = new GetClipTextCallback(rImGuiGetClipText);
+                SetClipTextCallback setClip = new SetClipTextCallback(rlImGuiSetClipText);
+
+                io.SetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(setClip);
+                io.GetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(getClip);
+            }
 
             io.ClipboardUserData = IntPtr.Zero;
             ReloadFonts();
