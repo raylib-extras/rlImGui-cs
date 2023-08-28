@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ImGui.NET" Version="1.78.0" />
+    <PackageReference Include="ImGui.NET" Version="1.89.7.1" />
     <PackageReference Include="Raylib-cs" Version="4.5.0.4" />
   </ItemGroup>
 
