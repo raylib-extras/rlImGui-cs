@@ -5,13 +5,13 @@
     <RootNamespace>rlImGui_cs</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Title>Raylib ImGui Inteface In C#</Title>
+    <Title>Raylib ImGui Inteface In C# with docking support</Title>
     <Authors>Chris Dill, Jeffery Myers</Authors>
-    <Description>Bindings to use ImGui.net with raylib-cs</Description>
+    <Description>Bindings to use ImGui.net with raylib-cs, with docking support</Description>
     <Copyright>2023 Jeffery Myers</Copyright>
     <PackageProjectUrl>https://github.com/raylib-extras/rlImGui-cs</PackageProjectUrl>
     <RepositoryUrl>https://github.com/raylib-extras/rlImGui-cs</RepositoryUrl>
-    <PackageId>rlImgui-cs</PackageId>
+    <PackageId>rlImgui-cs-branches-docking</PackageId>
     <SignAssembly>False</SignAssembly>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
     <FileVersion>1.0.0.1</FileVersion>
@@ -35,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ImGui.NET" Version="1.89.7.1" />
+    <PackageReference Include="ImGui.NET.Branches.Docking" Version="1.88.0" />
     <PackageReference Include="Raylib-cs" Version="4.5.0.4" />
   </ItemGroup>
 

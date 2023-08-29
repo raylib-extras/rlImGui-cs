@@ -289,6 +289,8 @@ namespace rlImGui_cs
             if (SetupUserFonts != null)
                 SetupUserFonts(io);
 
+            io.ConfigFlags |= ImGuiConfigFlags.DockingEnable;
+
             io.BackendFlags |= ImGuiBackendFlags.HasMouseCursors;
 
             io.MousePos.X = 0;
