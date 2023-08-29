@@ -43,6 +43,13 @@ namespace rlImGui_cs
         internal static bool rlImGuiIsAltDown() { return Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT_ALT) || Raylib.IsKeyDown(KeyboardKey.KEY_LEFT_ALT); }
         internal static bool rlImGuiIsSuperDown() { return Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT_SUPER) || Raylib.IsKeyDown(KeyboardKey.KEY_LEFT_SUPER); }
 
+        public delegate void SetupUserFontsCallback(ImGuiIOPtr imGuiIo);
+
+        /// <summary>
+        /// Callback for cases where the user wants to install additional fonts.
+        /// </summary>
+        public static SetupUserFontsCallback SetupUserFonts = null;
+
         public static void Setup(bool darkTheme = true)
         {
             MouseCursorMap = new Dictionary<ImGuiMouseCursor, MouseCursor>();
@@ -199,7 +206,6 @@ namespace rlImGui_cs
             MouseCursorMap[ImGuiMouseCursor.ResizeNWSE] = MouseCursor.MOUSE_CURSOR_RESIZE_NWSE;
             MouseCursorMap[ImGuiMouseCursor.NotAllowed] = MouseCursor.MOUSE_CURSOR_NOT_ALLOWED;
         }
-
         public static unsafe void ReloadFonts()
         {
             ImGui.SetCurrentContext(ImGuiContext);
@@ -279,6 +285,10 @@ namespace rlImGui_cs
             }
 
             ImGuiIOPtr io = ImGui.GetIO();
+
+            if (SetupUserFonts != null)
+                SetupUserFonts(io);
+
             io.BackendFlags |= ImGuiBackendFlags.HasMouseCursors;
 
             io.MousePos.X = 0;
@@ -369,7 +379,6 @@ namespace rlImGui_cs
                 }
             }
         }
-
 
         private static void FrameEvents()
         {
