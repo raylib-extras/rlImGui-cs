@@ -50,6 +50,10 @@ namespace rlImGui_cs
         /// </summary>
         public static SetupUserFontsCallback SetupUserFonts = null;
 
+        /// <summary>
+        /// Sets up ImGui, loads fonts and themes
+        /// </summary>
+        /// <param name="darkTheme">when true(default) the dark theme is used, when false the light theme is used</param>
         public static void Setup(bool darkTheme = true)
         {
             MouseCursorMap = new Dictionary<ImGuiMouseCursor, MouseCursor>();
@@ -73,6 +77,10 @@ namespace rlImGui_cs
             EndInitImGui();
         }
 
+        /// <summary>
+        /// Custom initialization. Not needed if you call Setup. Only needed if you want to add custom setup code.
+        /// must be followed by EndInitImGui
+        /// </summary>
         public static void BeginInitImGui()
         {
             SetupKeymap();
@@ -206,6 +214,10 @@ namespace rlImGui_cs
             MouseCursorMap[ImGuiMouseCursor.ResizeNWSE] = MouseCursor.MOUSE_CURSOR_RESIZE_NWSE;
             MouseCursorMap[ImGuiMouseCursor.NotAllowed] = MouseCursor.MOUSE_CURSOR_NOT_ALLOWED;
         }
+
+        /// <summary>
+        /// Forces the font texture atlas to be recomputed and re-cached
+        /// </summary>
         public static unsafe void ReloadFonts()
         {
             ImGui.SetCurrentContext(ImGuiContext);
@@ -222,6 +234,9 @@ namespace rlImGui_cs
                 mipmaps = 1,
                 format = PixelFormat.PIXELFORMAT_UNCOMPRESSED_R8G8B8A8,
             };
+
+            if (Raylib.IsTextureReady(FontTexture))
+                Raylib.UnloadTexture(FontTexture);
 
             FontTexture = Raylib.LoadTextureFromImage(image);
 
@@ -241,6 +256,10 @@ namespace rlImGui_cs
         private unsafe delegate sbyte* GetClipTextCallback(IntPtr userData);
         private unsafe delegate void SetClipTextCallback(IntPtr userData, sbyte* text);
 
+        /// <summary>
+        /// End Custom initialization. Not needed if you call Setup. Only needed if you want to add custom setup code.
+        /// must be proceeded by BeginInitImGui
+        /// </summary>
         public static void EndInitImGui()
         {
             SetupMouseCursors();
@@ -308,7 +327,7 @@ namespace rlImGui_cs
             ReloadFonts();
         }
 
-        private static void NewFrame()
+        private static void NewFrame(float dt = -1)
         {
             ImGuiIOPtr io = ImGui.GetIO();
 
@@ -333,7 +352,7 @@ namespace rlImGui_cs
                 io.DisplayFramebufferScale = new Vector2(1.0f, 1.0f);
             }
 
-            io.DeltaTime = Raylib.GetFrameTime();
+            io.DeltaTime = dt >= 0 ? dt : Raylib.GetFrameTime();
 
             if (io.WantSetMousePos)
             {
@@ -439,12 +458,15 @@ namespace rlImGui_cs
                 pressed = Raylib.GetCharPressed();
             }
         }
-
-        public static void Begin()
+        /// <summary>
+        /// Starts a new ImGui Frame
+        /// </summary>
+        /// <param name="dt">optional delta time, any value < 0 will use raylib GetFrameTime</param>
+        public static void Begin(float dt = -1)
         {
             ImGui.SetCurrentContext(ImGuiContext);
 
-            NewFrame();
+            NewFrame(dt);
             FrameEvents();
             ImGui.NewFrame();
         }
@@ -534,6 +556,9 @@ namespace rlImGui_cs
             Rlgl.rlEnableBackfaceCulling();
         }
 
+        /// <summary>
+        /// Ends an ImGui frame and submits all ImGui drawing to raylib for processing.
+        /// </summary>
         public static void End()
         {
             ImGui.SetCurrentContext(ImGuiContext);
@@ -541,6 +566,9 @@ namespace rlImGui_cs
             RenderData();
         }
 
+        /// <summary>
+        /// Cleanup ImGui and unload font atlas
+        /// </summary>
         public static void Shutdown()
         {
             Raylib.UnloadTexture(FontTexture);
@@ -555,21 +583,50 @@ namespace rlImGui_cs
             }
         }
 
+        /// <summary>
+        /// Draw a texture as an image in an ImGui Context
+        /// Uses the current ImGui Cursor position and the full texture size.
+        /// </summary>
+        /// <param name="image">The raylib texture to draw</param>
         public static void Image(Texture2D image)
         {
             ImGui.Image(new IntPtr(image.id), new Vector2(image.width, image.height));
         }
 
+        /// <summary>
+        /// Draw a texture as an image in an ImGui Context at a specific size
+        /// Uses the current ImGui Cursor position and the specified width and height
+        /// The image will be scaled up or down to fit as needed
+        /// </summary>
+        /// <param name="image">The raylib texture to draw</param>
+        /// <param name="width">The width of the drawn image</param>
+        /// <param name="height">The height of the drawn image</param>
         public static void ImageSize(Texture2D image, int width, int height)
         {
             ImGui.Image(new IntPtr(image.id), new Vector2(width, height));
         }
 
+        /// <summary>
+        /// Draw a texture as an image in an ImGui Context at a specific size
+        /// Uses the current ImGui Cursor position and the specified size
+        /// The image will be scaled up or down to fit as needed
+        /// </summary>
+        /// <param name="image">The raylib texture to draw</param>
+        /// <param name="size">The size of drawn image</param>
         public static void ImageSize(Texture2D image, Vector2 size)
         {
             ImGui.Image(new IntPtr(image.id), size);
         }
 
+        /// <summary>
+        /// Draw a portion texture as an image in an ImGui Context at a defined size
+        /// Uses the current ImGui Cursor position and the specified size
+        /// The image will be scaled up or down to fit as needed
+        /// </summary>
+        /// <param name="image">The raylib texture to draw</param>
+        /// <param name="destWidth">The width of the drawn image</param>
+        /// <param name="destHeight">The height of the drawn image</param>
+        /// <param name="sourceRect">The portion of the texture to draw as an image. Negative values for the width and height will flip the image</param>
         public static void ImageRect(Texture2D image, int destWidth, int destHeight, Rectangle sourceRect)
         {
             Vector2 uv0 = new Vector2();
@@ -599,5 +656,38 @@ namespace rlImGui_cs
 
             ImGui.Image(new IntPtr(image.id), new Vector2(destWidth, destHeight), uv0, uv1);
         }
+
+        /// <summary>
+        /// Draws a render texture as an image an ImGui Context, automatically flipping the Y axis so it will show correctly on screen
+        /// </summary>
+        /// <param name="image">The render texture to draw</param>
+        public static void ImageRenderTexture(RenderTexture2D image)
+        {
+            ImageRect(image.texture, image.texture.width, image.texture.height, new Rectangle(0, 0, image.texture.width, -image.texture.height));
+        }
+
+        /// <summary>
+        /// Draws a texture as an image button in an ImGui context. Uses the current ImGui cursor position and the full size of the texture
+        /// </summary>
+        /// <param name="name">The display name and ImGui ID for the button</param>
+        /// <param name="image">The texture to draw</param>
+        /// <returns>True if the button was clicked</returns>
+        public static bool ImageButton(System.String name, Texture2D image)
+        {
+            return ImageButtonSize(name, image, new Vector2(image.width, image.height));
+        }
+
+        /// <summary>
+        /// Draws a texture as an image button in an ImGui context. Uses the current ImGui cursor position and the specified size.
+        /// </summary>
+        /// <param name="name">The display name and ImGui ID for the button</param>
+        /// <param name="image">The texture to draw</param>
+        /// <param name="size">The size of the button/param>
+        /// <returns>True if the button was clicked</returns>
+        public static bool ImageButtonSize(System.String name, Texture2D image, Vector2 size)
+        {
+            return ImGui.ImageButton(name, new IntPtr(image.id), size);
+        }
+
     }
 }
