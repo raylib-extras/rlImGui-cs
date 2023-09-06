@@ -45,16 +45,8 @@ namespace editor_example
             {
                 Focused = ImGui.IsWindowFocused(ImGuiFocusedFlags.ChildWindows);
 
-                Vector2 size = ImGui.GetContentRegionAvail();
-
-                Rectangle viewRect = new Rectangle();
-                viewRect.x = ViewTexture.texture.width / 2 - size.X / 2;
-                viewRect.y = ViewTexture.texture.height / 2 - size.Y / 2;
-                viewRect.width = size.X;
-                viewRect.height = -size.Y;
-
                 // draw the view
-                rlImGui.ImageRect(ViewTexture.texture, (int)size.X, (int)size.Y, viewRect);
+                rlImGui.ImageRenderTextureFit(ViewTexture, true);
 
                 ImGui.End();
             }
