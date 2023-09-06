@@ -667,6 +667,37 @@ namespace rlImGui_cs
         }
 
         /// <summary>
+        /// Draws a render texture as an image to the current ImGui Context, flipping the Y axis so it will show correctly on the screen
+        /// The texture will be scaled to fit the content are available, centered if desired
+        /// </summary>
+        /// <param name="image">The render texture to draw</param>
+        /// <param name="center">When true the texture will be centered in the content area. When false the image will be left and top justified</param>
+        public static void ImageRenderTextureFit(RenderTexture2D image, bool center = true)
+        {
+            Vector2 area = ImGui.GetContentRegionAvail();
+
+            float scale = area.X / image.texture.width;
+
+            float y = image.texture.height * scale;
+            if (y > area.Y)
+            {
+                scale = area.Y / image.texture.height;
+            }
+
+            int sizeX = (int)(image.texture.width * scale);
+            int sizeY = (int)(image.texture.height * scale);
+
+            if (center)
+            {
+                ImGui.SetCursorPosX(0);
+                ImGui.SetCursorPosX(area.X / 2 - sizeX / 2);
+                ImGui.SetCursorPosY(ImGui.GetCursorPosY() + (area.Y / 2 - sizeY / 2));
+            }
+
+            ImageRect(image.texture, sizeX, sizeY, new Rectangle(0,0, (image.texture.width), -(image.texture.height) ));
+        }
+
+        /// <summary>
         /// Draws a texture as an image button in an ImGui context. Uses the current ImGui cursor position and the full size of the texture
         /// </summary>
         /// <param name="name">The display name and ImGui ID for the button</param>
