@@ -702,24 +702,22 @@ namespace rlImGui_cs
         /// <summary>
         /// Draws a texture as an image button in an ImGui context. Uses the current ImGui cursor position and the full size of the texture
         /// </summary>
-        /// <param name="name">The display name and ImGui ID for the button</param>
         /// <param name="image">The texture to draw</param>
         /// <returns>True if the button was clicked</returns>
-        public static bool ImageButton(System.String name, Texture2D image)
+        public static bool ImageButton(Texture2D image)
         {
-            return ImageButtonSize(name, image, new Vector2(image.width, image.height));
+            return ImageButtonSize(image, new Vector2(image.width, image.height));
         }
 
         /// <summary>
         /// Draws a texture as an image button in an ImGui context. Uses the current ImGui cursor position and the specified size.
         /// </summary>
-        /// <param name="name">The display name and ImGui ID for the button</param>
         /// <param name="image">The texture to draw</param>
         /// <param name="size">The size of the button/param>
         /// <returns>True if the button was clicked</returns>
-        public static bool ImageButtonSize(System.String name, Texture2D image, Vector2 size)
+        public static bool ImageButtonSize(Texture2D image, Vector2 size)
         {
-            return ImGui.ImageButton(name, new IntPtr(image.id), size);
+            return ImGui.ImageButton(new IntPtr(image.id), size);
         }
 
     }
