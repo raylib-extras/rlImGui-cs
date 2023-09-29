@@ -510,7 +510,7 @@ namespace rlImGui_cs
 
             for (int l = 0; l < data.CmdListsCount; l++)
             {
-                ImDrawListPtr commandList = data.CmdListsRange[l];
+                ImDrawListPtr commandList = data.CmdLists[l];
 
                 for (int cmdIndex = 0; cmdIndex < commandList.CmdBuffer.Size; cmdIndex++)
                 {
