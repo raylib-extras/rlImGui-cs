@@ -58,7 +58,7 @@ namespace editor_example
             Raylib.InitWindow(1280, 800, "raylib-Extras-cs [ImGui] example - editor ImGui Demo");
             Raylib.SetTargetFPS(144);
 
-            rlImGui.Setup(true);
+            rlImGui.Setup(true, true);
 
             ImGui.GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
 
