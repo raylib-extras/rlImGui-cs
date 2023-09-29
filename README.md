@@ -48,6 +48,23 @@ Raylib textures can be drawn in ImGui using the following functions
 rlImGui.Image(Texture2D image);
 rlImGui.ImageSize(Texture2D image, int width, int height);
 rlImGui.ImageRect(Texture2D image, int destWidth, int destHeight, Rectangle sourceRect);
+rlImGui.ImageRenderTexture(RenderTexture2D image);
+```
+## Image Buttons
+```
+rlImGui.ImageButton(System.String name, Texture2D image);
+rlImGui.ImageButtonSize(System.String name, Texture2D image, Vector2 size);
 ```
 
+# Changelist
 
+## v1.0.2.0
+* Comment public API
+* Optional Delta Time argument for new frame
+* Image Buttons
+* Render Texture drawing functiona
+
+## v1.0.0.1
+* Inital nuget package.
+* Update to current ImGui
+* Include FontAwesome
