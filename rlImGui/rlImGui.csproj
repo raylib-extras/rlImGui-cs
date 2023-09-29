@@ -17,11 +17,11 @@
     <FileVersion>1.0.2.0</FileVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <PackageTags>raylib;ImGui;ImGui.NET;gamedev;GUI; Imedate Mode;</PackageTags>
+    <PackageTags>raylib;ImGui;ImGui.NET;gamedev;GUI; Immediate Mode;</PackageTags>
     <PackageReleaseNotes>Inital Release</PackageReleaseNotes>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup>
