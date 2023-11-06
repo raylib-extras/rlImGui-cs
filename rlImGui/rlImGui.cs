@@ -54,7 +54,8 @@ namespace rlImGui_cs
         /// Sets up ImGui, loads fonts and themes
         /// </summary>
         /// <param name="darkTheme">when true(default) the dark theme is used, when false the light theme is used</param>
-        public static void Setup(bool darkTheme = true)
+        /// <param name="enableDocking">when true(not default) docking support will be enabled/param>
+        public static void Setup(bool darkTheme = true, bool enableDocking = false)
         {
             MouseCursorMap = new Dictionary<ImGuiMouseCursor, MouseCursor>();
             MouseCursorMap = new Dictionary<ImGuiMouseCursor, MouseCursor>();
@@ -73,6 +74,9 @@ namespace rlImGui_cs
                 ImGui.StyleColorsDark();
             else
                 ImGui.StyleColorsLight();
+
+            if (enableDocking)
+                ImGui.GetIO().ConfigFlags |= ImGuiConfigFlags.DockingEnable;
 
             EndInitImGui();
         }
@@ -540,7 +544,7 @@ namespace rlImGui_cs
 
             for (int l = 0; l < data.CmdListsCount; l++)
             {
-                ImDrawListPtr commandList = data.CmdListsRange[l];
+                ImDrawListPtr commandList = data.CmdLists[l];
 
                 for (int cmdIndex = 0; cmdIndex < commandList.CmdBuffer.Size; cmdIndex++)
                 {
