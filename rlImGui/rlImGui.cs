@@ -331,6 +331,14 @@ namespace rlImGui_cs
             ReloadFonts();
         }
 
+        private static void SetMouseEvent(ImGuiIOPtr io, MouseButton rayMouse, ImGuiMouseButton imGuiMouse)
+        {
+            if (Raylib.IsMouseButtonPressed(rayMouse))
+                io.AddMouseButtonEvent((int)imGuiMouse, true);
+            else if (Raylib.IsMouseButtonReleased(rayMouse))
+                io.AddMouseButtonEvent((int)imGuiMouse, false);
+        }
+
         private static void NewFrame(float dt = -1)
         {
             ImGuiIOPtr io = ImGui.GetIO();
@@ -364,17 +372,17 @@ namespace rlImGui_cs
             }
             else
             {
-                io.MousePos = Raylib.GetMousePosition();
+                io.AddMousePosEvent(Raylib.GetMouseX(), Raylib.GetMouseY());
             }
 
-            io.MouseDown[0] = Raylib.IsMouseButtonDown(MouseButton.MOUSE_LEFT_BUTTON);
-            io.MouseDown[1] = Raylib.IsMouseButtonDown(MouseButton.MOUSE_RIGHT_BUTTON);
-            io.MouseDown[2] = Raylib.IsMouseButtonDown(MouseButton.MOUSE_MIDDLE_BUTTON);
+            SetMouseEvent(io, MouseButton.MOUSE_BUTTON_LEFT, ImGuiMouseButton.Left);
+            SetMouseEvent(io, MouseButton.MOUSE_BUTTON_RIGHT, ImGuiMouseButton.Right);
+            SetMouseEvent(io, MouseButton.MOUSE_BUTTON_MIDDLE, ImGuiMouseButton.Middle);
+            SetMouseEvent(io, MouseButton.MOUSE_BUTTON_FORWARD, ImGuiMouseButton.Middle + 1);
+            SetMouseEvent(io, MouseButton.MOUSE_BUTTON_BACK, ImGuiMouseButton.Middle + 2);
 
-            if (Raylib.GetMouseWheelMove() > 0)
-                io.MouseWheel += 1;
-            else if (Raylib.GetMouseWheelMove() < 0)
-                io.MouseWheel -= 1;
+            var wheelMove = Raylib.GetMouseWheelMoveV();
+            io.AddMouseWheelEvent(wheelMove.X, wheelMove.Y);
 
             if ((io.ConfigFlags & ImGuiConfigFlags.NoMouseCursorChange) == 0)
             {
