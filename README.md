@@ -1,4 +1,4 @@
-# rlImGui-cs (4.5 compatible version)
+# rlImGui-cs (5.0.x compatible version)
 <img align="left" src="https://github.com/raysan5/raylib/raw/master/logo/raylib_logo_animation.gif" width="64">
 A Raylib-cs integration with DearImGui
 
@@ -10,7 +10,7 @@ rlImGui-cs is is a shared library that uses raylib-cs and ImGui.Net
 # Dependencies
 This library is dependent on two other packages.
 
-Raylib-cs (v 4.5.0.x)
+Raylib-cs (v 5.0.0.x)
 ImGui.NET (v 1.89.9.x)
 
 # Setup
