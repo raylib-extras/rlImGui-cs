@@ -343,7 +343,7 @@ namespace rlImGui_cs
         {
             ImGuiIOPtr io = ImGui.GetIO();
 
-            if (Raylib.IsWindowFullscreen())
+            if (Raylib.IsWindowFullscreen() || Raylib.IsWindowMaximized())
             {
                 int monitor = Raylib.GetCurrentMonitor();
                 io.DisplaySize = new Vector2(Raylib.GetMonitorWidth(monitor), Raylib.GetMonitorHeight(monitor));
@@ -476,7 +476,12 @@ namespace rlImGui_cs
         private static void EnableScissor(float x, float y, float width, float height)
         {
             Rlgl.EnableScissorTest();
-            Rlgl.Scissor((int)x, Raylib.GetScreenHeight() - (int)(y + height), (int)width, (int)height);
+            ImGuiIOPtr io = ImGui.GetIO();
+
+            Rlgl.Scissor(   (int)(x * io.DisplayFramebufferScale.X),
+                            (int)((io.DisplaySize.Y - (int)(y + height)) * io.DisplayFramebufferScale.Y),
+                            (int)(width * io.DisplayFramebufferScale.X),
+                            (int)(height * io.DisplayFramebufferScale.Y));
         }
 
         private static void TriangleVert(ImDrawVertPtr idx_vert)
