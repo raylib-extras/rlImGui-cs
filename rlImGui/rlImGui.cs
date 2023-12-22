@@ -452,9 +452,6 @@ namespace rlImGui_cs
                 keyId = Raylib.GetKeyPressed();
             }
 
-            foreach (var keyItr in RaylibKeyMap)
-                io.KeysData[(int)keyItr.Value].Down = (byte)(Raylib.IsKeyDown(keyItr.Key) ? 1 : 0);
-
             // look for any keys that were down last frame and see if they were down and are released
             foreach (var keyItr in RaylibKeyMap)
 	        {
