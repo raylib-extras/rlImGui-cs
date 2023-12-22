@@ -13,15 +13,15 @@
     <RepositoryUrl>https://github.com/raylib-extras/rlImGui-cs</RepositoryUrl>
     <PackageId>rlImgui-cs</PackageId>
     <SignAssembly>False</SignAssembly>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
-    <FileVersion>1.0.2.0</FileVersion>
+    <AssemblyVersion>2.0.0</AssemblyVersion>
+    <FileVersion>2.0.0</FileVersion>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <PackageTags>raylib;ImGui;ImGui.NET;gamedev;GUI; Imedate Mode;</PackageTags>
+    <PackageTags>raylib;ImGui;ImGui.NET;gamedev;GUI; Immediate Mode;</PackageTags>
     <PackageReleaseNotes>Inital Release</PackageReleaseNotes>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryType>git</RepositoryType>
-    <Version>1.0.2</Version>
+    <Version>2.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,8 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ImGui.NET" Version="1.89.9.2" />
-    <PackageReference Include="Raylib-cs" Version="4.5.0.4" />
+    <PackageReference Include="ImGui.NET" Version="1.90.0.1" />
+    <PackageReference Include="Raylib-cs" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>

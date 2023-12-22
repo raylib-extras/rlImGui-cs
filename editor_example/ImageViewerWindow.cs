@@ -28,12 +28,12 @@ namespace editor_example
 
         public override void Setup()
         {
-            Camera.zoom = 1;
-            Camera.target.X = 0;
-            Camera.target.Y = 0;
-            Camera.rotation = 0;
-            Camera.offset.X = Raylib.GetScreenWidth() / 2.0f;
-            Camera.offset.Y = Raylib.GetScreenHeight() / 2.0f;
+            Camera.Zoom = 1;
+            Camera.Target.X = 0;
+            Camera.Target.Y = 0;
+            Camera.Rotation = 0;
+            Camera.Offset.X = Raylib.GetScreenWidth() / 2.0f;
+            Camera.Offset.Y = Raylib.GetScreenHeight() / 2.0f;
 
             ViewTexture = Raylib.LoadRenderTexture(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
             ImageTexture = Raylib.LoadTexture("resources/parrots.png");
@@ -54,10 +54,10 @@ namespace editor_example
 
                 // center the scratch pad in the view
                 Rectangle viewRect = new Rectangle();
-                viewRect.x = ViewTexture.texture.width / 2 - size.X / 2;
-                viewRect.y = ViewTexture.texture.height / 2 - size.Y / 2;
-                viewRect.width = size.X;
-                viewRect.height = -size.Y;
+                viewRect.X = ViewTexture.Texture.Width / 2 - size.X / 2;
+                viewRect.Y = ViewTexture.Texture.Height / 2 - size.Y / 2;
+                viewRect.Width = size.X;
+                viewRect.Height = -size.Y;
 
                 if (ImGui.BeginChild("Toolbar", new Vector2(ImGui.GetContentRegionAvail().X, 25)))
                 {
@@ -89,11 +89,11 @@ namespace editor_example
                     }
 
                     ImGui.SameLine();
-                    ImGui.TextUnformatted(String.Format("camera target X%f Y%f", Camera.target.X, Camera.target.Y));
+                    ImGui.TextUnformatted(String.Format("camera target X%f Y%f", Camera.Target.X, Camera.Target.Y));
                     ImGui.EndChild();
                 }
 
-                rlImGui.ImageRect(ViewTexture.texture, (int)size.X, (int)size.Y, viewRect);
+                rlImGui.ImageRect(ViewTexture.Texture, (int)size.X, (int)size.Y, viewRect);
 
                 ImGui.End();
             }
@@ -116,8 +116,8 @@ namespace editor_example
                 Raylib.UnloadRenderTexture(ViewTexture);
                 ViewTexture = Raylib.LoadRenderTexture(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
 
-                Camera.offset.X = Raylib.GetScreenWidth() / 2.0f;
-                Camera.offset.Y = Raylib.GetScreenHeight() / 2.0f;
+                Camera.Offset.X = Raylib.GetScreenWidth() / 2.0f;
+                Camera.Offset.Y = Raylib.GetScreenHeight() / 2.0f;
             }
 
             if (Focused)
@@ -129,15 +129,15 @@ namespace editor_example
                         if (!Dragging)
                         {
                             LastMousePos = Raylib.GetMousePosition();
-                            LastTarget = Camera.target;
+                            LastTarget = Camera.Target;
                         }
                         Dragging = true;
                         Vector2 mousePos = Raylib.GetMousePosition();
                         Vector2 mouseDelta = Raymath.Vector2Subtract(LastMousePos, mousePos);
 
-                        mouseDelta.X /= Camera.zoom;
-                        mouseDelta.Y /= Camera.zoom;
-                        Camera.target = Raymath.Vector2Add(LastTarget, mouseDelta);
+                        mouseDelta.X /= Camera.Zoom;
+                        mouseDelta.Y /= Camera.Zoom;
+                        Camera.Target = Raymath.Vector2Add(LastTarget, mouseDelta);
 
                         DirtyScene = true;
 
@@ -165,7 +165,7 @@ namespace editor_example
             Raylib.BeginTextureMode(ViewTexture);
             Raylib.ClearBackground(Color.BLUE);
             Raylib.BeginMode2D(Camera);
-            Raylib.DrawTexture(ImageTexture, ImageTexture.width / -2, ImageTexture.height / -2, Color.WHITE);
+            Raylib.DrawTexture(ImageTexture, ImageTexture.Width / -2, ImageTexture.Height / -2, Color.WHITE);
             Raylib.EndMode2D();
             Raylib.EndTextureMode();
         }

@@ -17,10 +17,10 @@ namespace editor_example
         {
             ViewTexture = Raylib.LoadRenderTexture(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
 
-            Camera.fovy = 45;
-            Camera.up.Y = 1;
-            Camera.position.Y = 3;
-            Camera.position.Z = -25;
+            Camera.FovY = 45;
+            Camera.Up.Y = 1;
+            Camera.Position.Y = 3;
+            Camera.Position.Z = -25;
 
             Image img = Raylib.GenImageChecked(256, 256, 32, 32, Color.DARKGRAY, Color.WHITE);
             GridTexture = Raylib.LoadTextureFromImage(img);
@@ -67,7 +67,7 @@ namespace editor_example
             float period = 10;
             float magnitude = 25;
 
-            Camera.position.X = (float)(Math.Sin(Raylib.GetTime() / period) * magnitude);
+            Camera.Position.X = (float)(Math.Sin(Raylib.GetTime() / period) * magnitude);
 
             Raylib.BeginTextureMode(ViewTexture);
             Raylib.ClearBackground(Color.SKYBLUE);
@@ -112,7 +112,7 @@ namespace editor_example
             float z = position.Z;
 
             // Set desired texture to be enabled while drawing following vertex data
-            Rlgl.rlSetTexture(texture.id);
+            Rlgl.SetTexture(texture.Id);
 
             // Vertex data transformation can be defined with the commented lines,
             // but in this example we calculate the transformed vertex data directly when calling Rlgl.rlVertex3f()
@@ -122,108 +122,108 @@ namespace editor_example
             // Rlgl.rlRotatef(45, 0, 1, 0);
             // Rlgl.rlScalef(2.0f, 2.0f, 2.0f);
 
-            Rlgl.rlBegin(DrawMode.QUADS);
-            Rlgl.rlColor4ub(color.r, color.g, color.b, color.a);
+            Rlgl.Begin(DrawMode.QUADS);
+            Rlgl.Color4ub(color.R, color.G, color.B, color.A);
 
             // Front Face
             // Normal Pointing Towards Viewer
-            Rlgl.rlNormal3f(0.0f, 0.0f, 1.0f);
-            Rlgl.rlTexCoord2f(0.0f, 0.0f);
+            Rlgl.Normal3f(0.0f, 0.0f, 1.0f);
+            Rlgl.TexCoord2f(0.0f, 0.0f);
             // Bottom Left Of The Texture and Quad
-            Rlgl.rlVertex3f(x - width / 2, y - height / 2, z + length / 2);
-            Rlgl.rlTexCoord2f(1.0f, 0.0f);
+            Rlgl.Vertex3f(x - width / 2, y - height / 2, z + length / 2);
+            Rlgl.TexCoord2f(1.0f, 0.0f);
             // Bottom Right Of The Texture and Quad
-            Rlgl.rlVertex3f(x + width / 2, y - height / 2, z + length / 2);
-            Rlgl.rlTexCoord2f(1.0f, 1.0f);
+            Rlgl.Vertex3f(x + width / 2, y - height / 2, z + length / 2);
+            Rlgl.TexCoord2f(1.0f, 1.0f);
             // Top Right Of The Texture and Quad
-            Rlgl.rlVertex3f(x + width / 2, y + height / 2, z + length / 2);
-            Rlgl.rlTexCoord2f(0.0f, 1.0f);
+            Rlgl.Vertex3f(x + width / 2, y + height / 2, z + length / 2);
+            Rlgl.TexCoord2f(0.0f, 1.0f);
             // Top Left Of The Texture and Quad
-            Rlgl.rlVertex3f(x - width / 2, y + height / 2, z + length / 2);
+            Rlgl.Vertex3f(x - width / 2, y + height / 2, z + length / 2);
 
             // Back Face
             // Normal Pointing Away From Viewer
-            Rlgl.rlNormal3f(0.0f, 0.0f, -1.0f);
-            Rlgl.rlTexCoord2f(1.0f, 0.0f);
+            Rlgl.Normal3f(0.0f, 0.0f, -1.0f);
+            Rlgl.TexCoord2f(1.0f, 0.0f);
             // Bottom Right Of The Texture and Quad
-            Rlgl.rlVertex3f(x - width / 2, y - height / 2, z - length / 2);
-            Rlgl.rlTexCoord2f(1.0f, 1.0f);
+            Rlgl.Vertex3f(x - width / 2, y - height / 2, z - length / 2);
+            Rlgl.TexCoord2f(1.0f, 1.0f);
             // Top Right Of The Texture and Quad
-            Rlgl.rlVertex3f(x - width / 2, y + height / 2, z - length / 2);
-            Rlgl.rlTexCoord2f(0.0f, 1.0f);
+            Rlgl.Vertex3f(x - width / 2, y + height / 2, z - length / 2);
+            Rlgl.TexCoord2f(0.0f, 1.0f);
             // Top Left Of The Texture and Quad
-            Rlgl.rlVertex3f(x + width / 2, y + height / 2, z - length / 2);
-            Rlgl.rlTexCoord2f(0.0f, 0.0f);
+            Rlgl.Vertex3f(x + width / 2, y + height / 2, z - length / 2);
+            Rlgl.TexCoord2f(0.0f, 0.0f);
             // Bottom Left Of The Texture and Quad
-            Rlgl.rlVertex3f(x + width / 2, y - height / 2, z - length / 2);
+            Rlgl.Vertex3f(x + width / 2, y - height / 2, z - length / 2);
 
             // Top Face
             // Normal Pointing Up
-            Rlgl.rlNormal3f(0.0f, 1.0f, 0.0f);
-            Rlgl.rlTexCoord2f(0.0f, 1.0f);
+            Rlgl.Normal3f(0.0f, 1.0f, 0.0f);
+            Rlgl.TexCoord2f(0.0f, 1.0f);
             // Top Left Of The Texture and Quad
-            Rlgl.rlVertex3f(x - width / 2, y + height / 2, z - length / 2);
-            Rlgl.rlTexCoord2f(0.0f, 0.0f);
+            Rlgl.Vertex3f(x - width / 2, y + height / 2, z - length / 2);
+            Rlgl.TexCoord2f(0.0f, 0.0f);
             // Bottom Left Of The Texture and Quad
-            Rlgl.rlVertex3f(x - width / 2, y + height / 2, z + length / 2);
-            Rlgl.rlTexCoord2f(1.0f, 0.0f);
+            Rlgl.Vertex3f(x - width / 2, y + height / 2, z + length / 2);
+            Rlgl.TexCoord2f(1.0f, 0.0f);
             // Bottom Right Of The Texture and Quad
-            Rlgl.rlVertex3f(x + width / 2, y + height / 2, z + length / 2);
-            Rlgl.rlTexCoord2f(1.0f, 1.0f);
+            Rlgl.Vertex3f(x + width / 2, y + height / 2, z + length / 2);
+            Rlgl.TexCoord2f(1.0f, 1.0f);
             // Top Right Of The Texture and Quad
-            Rlgl.rlVertex3f(x + width / 2, y + height / 2, z - length / 2);
+            Rlgl.Vertex3f(x + width / 2, y + height / 2, z - length / 2);
 
             // Bottom Face
             // Normal Pointing Down
-            Rlgl.rlNormal3f(0.0f, -1.0f, 0.0f);
-            Rlgl.rlTexCoord2f(1.0f, 1.0f);
+            Rlgl.Normal3f(0.0f, -1.0f, 0.0f);
+            Rlgl.TexCoord2f(1.0f, 1.0f);
             // Top Right Of The Texture and Quad
-            Rlgl.rlVertex3f(x - width / 2, y - height / 2, z - length / 2);
-            Rlgl.rlTexCoord2f(0.0f, 1.0f);
+            Rlgl.Vertex3f(x - width / 2, y - height / 2, z - length / 2);
+            Rlgl.TexCoord2f(0.0f, 1.0f);
             // Top Left Of The Texture and Quad
-            Rlgl.rlVertex3f(x + width / 2, y - height / 2, z - length / 2);
-            Rlgl.rlTexCoord2f(0.0f, 0.0f);
+            Rlgl.Vertex3f(x + width / 2, y - height / 2, z - length / 2);
+            Rlgl.TexCoord2f(0.0f, 0.0f);
             // Bottom Left Of The Texture and Quad
-            Rlgl.rlVertex3f(x + width / 2, y - height / 2, z + length / 2);
-            Rlgl.rlTexCoord2f(1.0f, 0.0f);
+            Rlgl.Vertex3f(x + width / 2, y - height / 2, z + length / 2);
+            Rlgl.TexCoord2f(1.0f, 0.0f);
             // Bottom Right Of The Texture and Quad
-            Rlgl.rlVertex3f(x - width / 2, y - height / 2, z + length / 2);
+            Rlgl.Vertex3f(x - width / 2, y - height / 2, z + length / 2);
 
             // Right face
             // Normal Pointing Right
-            Rlgl.rlNormal3f(1.0f, 0.0f, 0.0f);
-            Rlgl.rlTexCoord2f(1.0f, 0.0f);
+            Rlgl.Normal3f(1.0f, 0.0f, 0.0f);
+            Rlgl.TexCoord2f(1.0f, 0.0f);
             // Bottom Right Of The Texture and Quad
-            Rlgl.rlVertex3f(x + width / 2, y - height / 2, z - length / 2);
-            Rlgl.rlTexCoord2f(1.0f, 1.0f);
+            Rlgl.Vertex3f(x + width / 2, y - height / 2, z - length / 2);
+            Rlgl.TexCoord2f(1.0f, 1.0f);
             // Top Right Of The Texture and Quad
-            Rlgl.rlVertex3f(x + width / 2, y + height / 2, z - length / 2);
-            Rlgl.rlTexCoord2f(0.0f, 1.0f);
+            Rlgl.Vertex3f(x + width / 2, y + height / 2, z - length / 2);
+            Rlgl.TexCoord2f(0.0f, 1.0f);
             // Top Left Of The Texture and Quad
-            Rlgl.rlVertex3f(x + width / 2, y + height / 2, z + length / 2);
-            Rlgl.rlTexCoord2f(0.0f, 0.0f);
+            Rlgl.Vertex3f(x + width / 2, y + height / 2, z + length / 2);
+            Rlgl.TexCoord2f(0.0f, 0.0f);
             // Bottom Left Of The Texture and Quad
-            Rlgl.rlVertex3f(x + width / 2, y - height / 2, z + length / 2);
+            Rlgl.Vertex3f(x + width / 2, y - height / 2, z + length / 2);
 
             // Left Face
             // Normal Pointing Left
-            Rlgl.rlNormal3f(-1.0f, 0.0f, 0.0f);
-            Rlgl.rlTexCoord2f(0.0f, 0.0f);
+            Rlgl.Normal3f(-1.0f, 0.0f, 0.0f);
+            Rlgl.TexCoord2f(0.0f, 0.0f);
             // Bottom Left Of The Texture and Quad
-            Rlgl.rlVertex3f(x - width / 2, y - height / 2, z - length / 2);
-            Rlgl.rlTexCoord2f(1.0f, 0.0f);
+            Rlgl.Vertex3f(x - width / 2, y - height / 2, z - length / 2);
+            Rlgl.TexCoord2f(1.0f, 0.0f);
             // Bottom Right Of The Texture and Quad
-            Rlgl.rlVertex3f(x - width / 2, y - height / 2, z + length / 2);
-            Rlgl.rlTexCoord2f(1.0f, 1.0f);
+            Rlgl.Vertex3f(x - width / 2, y - height / 2, z + length / 2);
+            Rlgl.TexCoord2f(1.0f, 1.0f);
             // Top Right Of The Texture and Quad
-            Rlgl.rlVertex3f(x - width / 2, y + height / 2, z + length / 2);
-            Rlgl.rlTexCoord2f(0.0f, 1.0f);
+            Rlgl.Vertex3f(x - width / 2, y + height / 2, z + length / 2);
+            Rlgl.TexCoord2f(0.0f, 1.0f);
             // Top Left Of The Texture and Quad
-            Rlgl.rlVertex3f(x - width / 2, y + height / 2, z - length / 2);
-            Rlgl.rlEnd();
+            Rlgl.Vertex3f(x - width / 2, y + height / 2, z - length / 2);
+            Rlgl.End();
             //rlPopMatrix();
 
-            Rlgl.rlSetTexture(0);
+            Rlgl.SetTexture(0);
         }
     }
 }
