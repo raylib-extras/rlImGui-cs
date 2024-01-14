@@ -354,6 +354,10 @@ namespace rlImGui_cs
             }
 
             io.DisplayFramebufferScale = Raylib.GetWindowScaleDPI();
+
+            if (!Raylib.IsWindowState(ConfigFlags.FLAG_WINDOW_HIGHDPI))
+                io.DisplayFramebufferScale = new Vector2( 1,1 );
+
             io.DeltaTime = dt >= 0 ? dt : Raylib.GetFrameTime();
 
             if (io.WantSetMousePos)
@@ -475,10 +479,14 @@ namespace rlImGui_cs
             Rlgl.EnableScissorTest();
             ImGuiIOPtr io = ImGui.GetIO();
 
-            Rlgl.Scissor(   (int)(x * io.DisplayFramebufferScale.X),
-                            (int)((io.DisplaySize.Y - (int)(y + height)) * io.DisplayFramebufferScale.Y),
-                            (int)(width * io.DisplayFramebufferScale.X),
-                            (int)(height * io.DisplayFramebufferScale.Y));
+            Vector2 scale = new Vector2(1.0f, 1.0f);
+            if (Raylib.IsWindowState(ConfigFlags.FLAG_WINDOW_HIGHDPI))
+                scale = io.DisplayFramebufferScale;
+
+            Rlgl.Scissor(   (int)(x * scale.X),
+                            (int)((io.DisplaySize.Y - (int)(y + height)) * scale.Y),
+                            (int)(width * scale.X),
+                            (int)(height * scale.Y));
         }
 
         private static void TriangleVert(ImDrawVertPtr idx_vert)
