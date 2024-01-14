@@ -1,4 +1,4 @@
-# rlImGui-cs (5.0.x compatible version)
+# rlImGui-cs (raylib cs 5.0 compatible version)
 <img align="left" src="https://github.com/raysan5/raylib/raw/master/logo/raylib_logo_animation.gif" width="64">
 A Raylib-cs integration with DearImGui
 
