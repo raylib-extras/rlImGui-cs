@@ -353,10 +353,10 @@ namespace rlImGui_cs
                 io.DisplaySize = new Vector2(Raylib.GetScreenWidth(), Raylib.GetScreenHeight());
             }
 
-            io.DisplayFramebufferScale = Raylib.GetWindowScaleDPI();
+            io.DisplayFramebufferScale = new Vector2(1, 1);
 
-            if (!Raylib.IsWindowState(ConfigFlags.FLAG_WINDOW_HIGHDPI))
-                io.DisplayFramebufferScale = new Vector2( 1,1 );
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) || Raylib.IsWindowState(ConfigFlags.FLAG_WINDOW_HIGHDPI))
+                    io.DisplayFramebufferScale = Raylib.GetWindowScaleDPI();
 
             io.DeltaTime = dt >= 0 ? dt : Raylib.GetFrameTime();
 
@@ -480,7 +480,7 @@ namespace rlImGui_cs
             ImGuiIOPtr io = ImGui.GetIO();
 
             Vector2 scale = new Vector2(1.0f, 1.0f);
-            if (Raylib.IsWindowState(ConfigFlags.FLAG_WINDOW_HIGHDPI))
+            if (Raylib.IsWindowState(ConfigFlags.FLAG_WINDOW_HIGHDPI) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 scale = io.DisplayFramebufferScale;
 
             Rlgl.Scissor(   (int)(x * scale.X),
