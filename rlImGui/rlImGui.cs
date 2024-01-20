@@ -302,7 +302,7 @@ namespace rlImGui_cs
 
                     fixed (byte* buffer = fontDataBuffer)
                     {
-                        ImGui.GetIO().Fonts.AddFontFromMemoryTTF(new IntPtr(buffer), fontDataBuffer.Length, 11, &icons_config);
+                        var fontPtr = ImGui.GetIO().Fonts.AddFontFromMemoryTTF(new IntPtr(buffer), fontDataBuffer.Length, 11, &icons_config, IconFonts.FontAwesome6.IconFontRanges);
                     }
                 }
             }
