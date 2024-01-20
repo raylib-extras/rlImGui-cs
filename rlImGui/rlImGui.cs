@@ -38,10 +38,10 @@ namespace rlImGui_cs
         internal static bool LastAltPressed = false;
         internal static bool LastSuperPressed = false;
 
-        internal static bool rlImGuiIsControlDown() { return Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT_CONTROL) || Raylib.IsKeyDown(KeyboardKey.KEY_LEFT_CONTROL); }
-        internal static bool rlImGuiIsShiftDown() { return Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT_SHIFT) || Raylib.IsKeyDown(KeyboardKey.KEY_LEFT_SHIFT); }
-        internal static bool rlImGuiIsAltDown() { return Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT_ALT) || Raylib.IsKeyDown(KeyboardKey.KEY_LEFT_ALT); }
-        internal static bool rlImGuiIsSuperDown() { return Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT_SUPER) || Raylib.IsKeyDown(KeyboardKey.KEY_LEFT_SUPER); }
+        internal static bool rlImGuiIsControlDown() { return Raylib.IsKeyDown(KeyboardKey.RightControl) || Raylib.IsKeyDown(KeyboardKey.LeftControl); }
+        internal static bool rlImGuiIsShiftDown() { return Raylib.IsKeyDown(KeyboardKey.RightShift) || Raylib.IsKeyDown(KeyboardKey.LeftShift); }
+        internal static bool rlImGuiIsAltDown() { return Raylib.IsKeyDown(KeyboardKey.RightAlt) || Raylib.IsKeyDown(KeyboardKey.LeftAlt); }
+        internal static bool rlImGuiIsSuperDown() { return Raylib.IsKeyDown(KeyboardKey.RightSuper) || Raylib.IsKeyDown(KeyboardKey.LeftSuper); }
 
         public delegate void SetupUserFontsCallback(ImGuiIOPtr imGuiIo);
 
@@ -98,125 +98,125 @@ namespace rlImGui_cs
                 return;
 
             // build up a map of raylib keys to ImGuiKeys
-            RaylibKeyMap[KeyboardKey.KEY_APOSTROPHE] = ImGuiKey.Apostrophe;
-            RaylibKeyMap[KeyboardKey.KEY_COMMA] = ImGuiKey.Comma;
-            RaylibKeyMap[KeyboardKey.KEY_MINUS] = ImGuiKey.Minus;
-            RaylibKeyMap[KeyboardKey.KEY_PERIOD] = ImGuiKey.Period;
-            RaylibKeyMap[KeyboardKey.KEY_SLASH] = ImGuiKey.Slash;
-            RaylibKeyMap[KeyboardKey.KEY_ZERO] = ImGuiKey._0;
-            RaylibKeyMap[KeyboardKey.KEY_ONE] = ImGuiKey._1;
-            RaylibKeyMap[KeyboardKey.KEY_TWO] = ImGuiKey._2;
-            RaylibKeyMap[KeyboardKey.KEY_THREE] = ImGuiKey._3;
-            RaylibKeyMap[KeyboardKey.KEY_FOUR] = ImGuiKey._4;
-            RaylibKeyMap[KeyboardKey.KEY_FIVE] = ImGuiKey._5;
-            RaylibKeyMap[KeyboardKey.KEY_SIX] = ImGuiKey._6;
-            RaylibKeyMap[KeyboardKey.KEY_SEVEN] = ImGuiKey._7;
-            RaylibKeyMap[KeyboardKey.KEY_EIGHT] = ImGuiKey._8;
-            RaylibKeyMap[KeyboardKey.KEY_NINE] = ImGuiKey._9;
-            RaylibKeyMap[KeyboardKey.KEY_SEMICOLON] = ImGuiKey.Semicolon;
-            RaylibKeyMap[KeyboardKey.KEY_EQUAL] = ImGuiKey.Equal;
-            RaylibKeyMap[KeyboardKey.KEY_A] = ImGuiKey.A;
-            RaylibKeyMap[KeyboardKey.KEY_B] = ImGuiKey.B;
-            RaylibKeyMap[KeyboardKey.KEY_C] = ImGuiKey.C;
-            RaylibKeyMap[KeyboardKey.KEY_D] = ImGuiKey.D;
-            RaylibKeyMap[KeyboardKey.KEY_E] = ImGuiKey.E;
-            RaylibKeyMap[KeyboardKey.KEY_F] = ImGuiKey.F;
-            RaylibKeyMap[KeyboardKey.KEY_G] = ImGuiKey.G;
-            RaylibKeyMap[KeyboardKey.KEY_H] = ImGuiKey.H;
-            RaylibKeyMap[KeyboardKey.KEY_I] = ImGuiKey.I;
-            RaylibKeyMap[KeyboardKey.KEY_J] = ImGuiKey.J;
-            RaylibKeyMap[KeyboardKey.KEY_K] = ImGuiKey.K;
-            RaylibKeyMap[KeyboardKey.KEY_L] = ImGuiKey.L;
-            RaylibKeyMap[KeyboardKey.KEY_M] = ImGuiKey.M;
-            RaylibKeyMap[KeyboardKey.KEY_N] = ImGuiKey.N;
-            RaylibKeyMap[KeyboardKey.KEY_O] = ImGuiKey.O;
-            RaylibKeyMap[KeyboardKey.KEY_P] = ImGuiKey.P;
-            RaylibKeyMap[KeyboardKey.KEY_Q] = ImGuiKey.Q;
-            RaylibKeyMap[KeyboardKey.KEY_R] = ImGuiKey.R;
-            RaylibKeyMap[KeyboardKey.KEY_S] = ImGuiKey.S;
-            RaylibKeyMap[KeyboardKey.KEY_T] = ImGuiKey.T;
-            RaylibKeyMap[KeyboardKey.KEY_U] = ImGuiKey.U;
-            RaylibKeyMap[KeyboardKey.KEY_V] = ImGuiKey.V;
-            RaylibKeyMap[KeyboardKey.KEY_W] = ImGuiKey.W;
-            RaylibKeyMap[KeyboardKey.KEY_X] = ImGuiKey.X;
-            RaylibKeyMap[KeyboardKey.KEY_Y] = ImGuiKey.Y;
-            RaylibKeyMap[KeyboardKey.KEY_Z] = ImGuiKey.Z;
-            RaylibKeyMap[KeyboardKey.KEY_SPACE] = ImGuiKey.Space;
-            RaylibKeyMap[KeyboardKey.KEY_ESCAPE] = ImGuiKey.Escape;
-            RaylibKeyMap[KeyboardKey.KEY_ENTER] = ImGuiKey.Enter;
-            RaylibKeyMap[KeyboardKey.KEY_TAB] = ImGuiKey.Tab;
-            RaylibKeyMap[KeyboardKey.KEY_BACKSPACE] = ImGuiKey.Backspace;
-            RaylibKeyMap[KeyboardKey.KEY_INSERT] = ImGuiKey.Insert;
-            RaylibKeyMap[KeyboardKey.KEY_DELETE] = ImGuiKey.Delete;
-            RaylibKeyMap[KeyboardKey.KEY_RIGHT] = ImGuiKey.RightArrow;
-            RaylibKeyMap[KeyboardKey.KEY_LEFT] = ImGuiKey.LeftArrow;
-            RaylibKeyMap[KeyboardKey.KEY_DOWN] = ImGuiKey.DownArrow;
-            RaylibKeyMap[KeyboardKey.KEY_UP] = ImGuiKey.UpArrow;
-            RaylibKeyMap[KeyboardKey.KEY_PAGE_UP] = ImGuiKey.PageUp;
-            RaylibKeyMap[KeyboardKey.KEY_PAGE_DOWN] = ImGuiKey.PageDown;
-            RaylibKeyMap[KeyboardKey.KEY_HOME] = ImGuiKey.Home;
-            RaylibKeyMap[KeyboardKey.KEY_END] = ImGuiKey.End;
-            RaylibKeyMap[KeyboardKey.KEY_CAPS_LOCK] = ImGuiKey.CapsLock;
-            RaylibKeyMap[KeyboardKey.KEY_SCROLL_LOCK] = ImGuiKey.ScrollLock;
-            RaylibKeyMap[KeyboardKey.KEY_NUM_LOCK] = ImGuiKey.NumLock;
-            RaylibKeyMap[KeyboardKey.KEY_PRINT_SCREEN] = ImGuiKey.PrintScreen;
-            RaylibKeyMap[KeyboardKey.KEY_PAUSE] = ImGuiKey.Pause;
-            RaylibKeyMap[KeyboardKey.KEY_F1] = ImGuiKey.F1;
-            RaylibKeyMap[KeyboardKey.KEY_F2] = ImGuiKey.F2;
-            RaylibKeyMap[KeyboardKey.KEY_F3] = ImGuiKey.F3;
-            RaylibKeyMap[KeyboardKey.KEY_F4] = ImGuiKey.F4;
-            RaylibKeyMap[KeyboardKey.KEY_F5] = ImGuiKey.F5;
-            RaylibKeyMap[KeyboardKey.KEY_F6] = ImGuiKey.F6;
-            RaylibKeyMap[KeyboardKey.KEY_F7] = ImGuiKey.F7;
-            RaylibKeyMap[KeyboardKey.KEY_F8] = ImGuiKey.F8;
-            RaylibKeyMap[KeyboardKey.KEY_F9] = ImGuiKey.F9;
-            RaylibKeyMap[KeyboardKey.KEY_F10] = ImGuiKey.F10;
-            RaylibKeyMap[KeyboardKey.KEY_F11] = ImGuiKey.F11;
-            RaylibKeyMap[KeyboardKey.KEY_F12] = ImGuiKey.F12;
-            RaylibKeyMap[KeyboardKey.KEY_LEFT_SHIFT] = ImGuiKey.LeftShift;
-            RaylibKeyMap[KeyboardKey.KEY_LEFT_CONTROL] = ImGuiKey.LeftCtrl;
-            RaylibKeyMap[KeyboardKey.KEY_LEFT_ALT] = ImGuiKey.LeftAlt;
-            RaylibKeyMap[KeyboardKey.KEY_LEFT_SUPER] = ImGuiKey.LeftSuper;
-            RaylibKeyMap[KeyboardKey.KEY_RIGHT_SHIFT] = ImGuiKey.RightShift;
-            RaylibKeyMap[KeyboardKey.KEY_RIGHT_CONTROL] = ImGuiKey.RightCtrl;
-            RaylibKeyMap[KeyboardKey.KEY_RIGHT_ALT] = ImGuiKey.RightAlt;
-            RaylibKeyMap[KeyboardKey.KEY_RIGHT_SUPER] = ImGuiKey.RightSuper;
-            RaylibKeyMap[KeyboardKey.KEY_KB_MENU] = ImGuiKey.Menu;
-            RaylibKeyMap[KeyboardKey.KEY_LEFT_BRACKET] = ImGuiKey.LeftBracket;
-            RaylibKeyMap[KeyboardKey.KEY_BACKSLASH] = ImGuiKey.Backslash;
-            RaylibKeyMap[KeyboardKey.KEY_RIGHT_BRACKET] = ImGuiKey.RightBracket;
-            RaylibKeyMap[KeyboardKey.KEY_GRAVE] = ImGuiKey.GraveAccent;
-            RaylibKeyMap[KeyboardKey.KEY_KP_0] = ImGuiKey.Keypad0;
-            RaylibKeyMap[KeyboardKey.KEY_KP_1] = ImGuiKey.Keypad1;
-            RaylibKeyMap[KeyboardKey.KEY_KP_2] = ImGuiKey.Keypad2;
-            RaylibKeyMap[KeyboardKey.KEY_KP_3] = ImGuiKey.Keypad3;
-            RaylibKeyMap[KeyboardKey.KEY_KP_4] = ImGuiKey.Keypad4;
-            RaylibKeyMap[KeyboardKey.KEY_KP_5] = ImGuiKey.Keypad5;
-            RaylibKeyMap[KeyboardKey.KEY_KP_6] = ImGuiKey.Keypad6;
-            RaylibKeyMap[KeyboardKey.KEY_KP_7] = ImGuiKey.Keypad7;
-            RaylibKeyMap[KeyboardKey.KEY_KP_8] = ImGuiKey.Keypad8;
-            RaylibKeyMap[KeyboardKey.KEY_KP_9] = ImGuiKey.Keypad9;
-            RaylibKeyMap[KeyboardKey.KEY_KP_DECIMAL] = ImGuiKey.KeypadDecimal;
-            RaylibKeyMap[KeyboardKey.KEY_KP_DIVIDE] = ImGuiKey.KeypadDivide;
-            RaylibKeyMap[KeyboardKey.KEY_KP_MULTIPLY] = ImGuiKey.KeypadMultiply;
-            RaylibKeyMap[KeyboardKey.KEY_KP_SUBTRACT] = ImGuiKey.KeypadSubtract;
-            RaylibKeyMap[KeyboardKey.KEY_KP_ADD] = ImGuiKey.KeypadAdd;
-            RaylibKeyMap[KeyboardKey.KEY_KP_ENTER] = ImGuiKey.KeypadEnter;
-            RaylibKeyMap[KeyboardKey.KEY_KP_EQUAL] = ImGuiKey.KeypadEqual;
+            RaylibKeyMap[KeyboardKey.Apostrophe] = ImGuiKey.Apostrophe;
+            RaylibKeyMap[KeyboardKey.Comma] = ImGuiKey.Comma;
+            RaylibKeyMap[KeyboardKey.Minus] = ImGuiKey.Minus;
+            RaylibKeyMap[KeyboardKey.Period] = ImGuiKey.Period;
+            RaylibKeyMap[KeyboardKey.Slash] = ImGuiKey.Slash;
+            RaylibKeyMap[KeyboardKey.Zero] = ImGuiKey._0;
+            RaylibKeyMap[KeyboardKey.One] = ImGuiKey._1;
+            RaylibKeyMap[KeyboardKey.Two] = ImGuiKey._2;
+            RaylibKeyMap[KeyboardKey.Three] = ImGuiKey._3;
+            RaylibKeyMap[KeyboardKey.Four] = ImGuiKey._4;
+            RaylibKeyMap[KeyboardKey.Five] = ImGuiKey._5;
+            RaylibKeyMap[KeyboardKey.Six] = ImGuiKey._6;
+            RaylibKeyMap[KeyboardKey.Seven] = ImGuiKey._7;
+            RaylibKeyMap[KeyboardKey.Eight] = ImGuiKey._8;
+            RaylibKeyMap[KeyboardKey.Nine] = ImGuiKey._9;
+            RaylibKeyMap[KeyboardKey.Semicolon] = ImGuiKey.Semicolon;
+            RaylibKeyMap[KeyboardKey.Equal] = ImGuiKey.Equal;
+            RaylibKeyMap[KeyboardKey.A] = ImGuiKey.A;
+            RaylibKeyMap[KeyboardKey.B] = ImGuiKey.B;
+            RaylibKeyMap[KeyboardKey.C] = ImGuiKey.C;
+            RaylibKeyMap[KeyboardKey.D] = ImGuiKey.D;
+            RaylibKeyMap[KeyboardKey.E] = ImGuiKey.E;
+            RaylibKeyMap[KeyboardKey.F] = ImGuiKey.F;
+            RaylibKeyMap[KeyboardKey.G] = ImGuiKey.G;
+            RaylibKeyMap[KeyboardKey.H] = ImGuiKey.H;
+            RaylibKeyMap[KeyboardKey.I] = ImGuiKey.I;
+            RaylibKeyMap[KeyboardKey.J] = ImGuiKey.J;
+            RaylibKeyMap[KeyboardKey.K] = ImGuiKey.K;
+            RaylibKeyMap[KeyboardKey.L] = ImGuiKey.L;
+            RaylibKeyMap[KeyboardKey.M] = ImGuiKey.M;
+            RaylibKeyMap[KeyboardKey.N] = ImGuiKey.N;
+            RaylibKeyMap[KeyboardKey.O] = ImGuiKey.O;
+            RaylibKeyMap[KeyboardKey.P] = ImGuiKey.P;
+            RaylibKeyMap[KeyboardKey.Q] = ImGuiKey.Q;
+            RaylibKeyMap[KeyboardKey.R] = ImGuiKey.R;
+            RaylibKeyMap[KeyboardKey.S] = ImGuiKey.S;
+            RaylibKeyMap[KeyboardKey.T] = ImGuiKey.T;
+            RaylibKeyMap[KeyboardKey.U] = ImGuiKey.U;
+            RaylibKeyMap[KeyboardKey.V] = ImGuiKey.V;
+            RaylibKeyMap[KeyboardKey.W] = ImGuiKey.W;
+            RaylibKeyMap[KeyboardKey.X] = ImGuiKey.X;
+            RaylibKeyMap[KeyboardKey.Y] = ImGuiKey.Y;
+            RaylibKeyMap[KeyboardKey.Z] = ImGuiKey.Z;
+            RaylibKeyMap[KeyboardKey.Space] = ImGuiKey.Space;
+            RaylibKeyMap[KeyboardKey.Escape] = ImGuiKey.Escape;
+            RaylibKeyMap[KeyboardKey.Enter] = ImGuiKey.Enter;
+            RaylibKeyMap[KeyboardKey.Tab] = ImGuiKey.Tab;
+            RaylibKeyMap[KeyboardKey.Backspace] = ImGuiKey.Backspace;
+            RaylibKeyMap[KeyboardKey.Insert] = ImGuiKey.Insert;
+            RaylibKeyMap[KeyboardKey.Delete] = ImGuiKey.Delete;
+            RaylibKeyMap[KeyboardKey.Right] = ImGuiKey.RightArrow;
+            RaylibKeyMap[KeyboardKey.Left] = ImGuiKey.LeftArrow;
+            RaylibKeyMap[KeyboardKey.Down] = ImGuiKey.DownArrow;
+            RaylibKeyMap[KeyboardKey.Up] = ImGuiKey.UpArrow;
+            RaylibKeyMap[KeyboardKey.PageUp] = ImGuiKey.PageUp;
+            RaylibKeyMap[KeyboardKey.PageDown] = ImGuiKey.PageDown;
+            RaylibKeyMap[KeyboardKey.Home] = ImGuiKey.Home;
+            RaylibKeyMap[KeyboardKey.End] = ImGuiKey.End;
+            RaylibKeyMap[KeyboardKey.CapsLock] = ImGuiKey.CapsLock;
+            RaylibKeyMap[KeyboardKey.ScrollLock] = ImGuiKey.ScrollLock;
+            RaylibKeyMap[KeyboardKey.NumLock] = ImGuiKey.NumLock;
+            RaylibKeyMap[KeyboardKey.PrintScreen] = ImGuiKey.PrintScreen;
+            RaylibKeyMap[KeyboardKey.Pause] = ImGuiKey.Pause;
+            RaylibKeyMap[KeyboardKey.F1] = ImGuiKey.F1;
+            RaylibKeyMap[KeyboardKey.F2] = ImGuiKey.F2;
+            RaylibKeyMap[KeyboardKey.F3] = ImGuiKey.F3;
+            RaylibKeyMap[KeyboardKey.F4] = ImGuiKey.F4;
+            RaylibKeyMap[KeyboardKey.F5] = ImGuiKey.F5;
+            RaylibKeyMap[KeyboardKey.F6] = ImGuiKey.F6;
+            RaylibKeyMap[KeyboardKey.F7] = ImGuiKey.F7;
+            RaylibKeyMap[KeyboardKey.F8] = ImGuiKey.F8;
+            RaylibKeyMap[KeyboardKey.F9] = ImGuiKey.F9;
+            RaylibKeyMap[KeyboardKey.F10] = ImGuiKey.F10;
+            RaylibKeyMap[KeyboardKey.F11] = ImGuiKey.F11;
+            RaylibKeyMap[KeyboardKey.F12] = ImGuiKey.F12;
+            RaylibKeyMap[KeyboardKey.LeftShift] = ImGuiKey.LeftShift;
+            RaylibKeyMap[KeyboardKey.LeftControl] = ImGuiKey.LeftCtrl;
+            RaylibKeyMap[KeyboardKey.LeftAlt] = ImGuiKey.LeftAlt;
+            RaylibKeyMap[KeyboardKey.LeftSuper] = ImGuiKey.LeftSuper;
+            RaylibKeyMap[KeyboardKey.RightControl] = ImGuiKey.RightShift;
+            RaylibKeyMap[KeyboardKey.RightControl] = ImGuiKey.RightCtrl;
+            RaylibKeyMap[KeyboardKey.RightAlt] = ImGuiKey.RightAlt;
+            RaylibKeyMap[KeyboardKey.RightSuper] = ImGuiKey.RightSuper;
+            RaylibKeyMap[KeyboardKey.KeyboardMenu] = ImGuiKey.Menu;
+            RaylibKeyMap[KeyboardKey.LeftBracket] = ImGuiKey.LeftBracket;
+            RaylibKeyMap[KeyboardKey.Backslash] = ImGuiKey.Backslash;
+            RaylibKeyMap[KeyboardKey.RightBracket] = ImGuiKey.RightBracket;
+            RaylibKeyMap[KeyboardKey.Grave] = ImGuiKey.GraveAccent;
+            RaylibKeyMap[KeyboardKey.Kp0] = ImGuiKey.Keypad0;
+            RaylibKeyMap[KeyboardKey.Kp1] = ImGuiKey.Keypad1;
+            RaylibKeyMap[KeyboardKey.Kp2] = ImGuiKey.Keypad2;
+            RaylibKeyMap[KeyboardKey.Kp3] = ImGuiKey.Keypad3;
+            RaylibKeyMap[KeyboardKey.Kp4] = ImGuiKey.Keypad4;
+            RaylibKeyMap[KeyboardKey.Kp5] = ImGuiKey.Keypad5;
+            RaylibKeyMap[KeyboardKey.Kp6] = ImGuiKey.Keypad6;
+            RaylibKeyMap[KeyboardKey.Kp7] = ImGuiKey.Keypad7;
+            RaylibKeyMap[KeyboardKey.Kp8] = ImGuiKey.Keypad8;
+            RaylibKeyMap[KeyboardKey.Kp9] = ImGuiKey.Keypad9;
+            RaylibKeyMap[KeyboardKey.KpDecimal] = ImGuiKey.KeypadDecimal;
+            RaylibKeyMap[KeyboardKey.KpDivide] = ImGuiKey.KeypadDivide;
+            RaylibKeyMap[KeyboardKey.KpMultiply] = ImGuiKey.KeypadMultiply;
+            RaylibKeyMap[KeyboardKey.KpSubtract] = ImGuiKey.KeypadSubtract;
+            RaylibKeyMap[KeyboardKey.KpAdd] = ImGuiKey.KeypadAdd;
+            RaylibKeyMap[KeyboardKey.KpEnter] = ImGuiKey.KeypadEnter;
+            RaylibKeyMap[KeyboardKey.KpEqual] = ImGuiKey.KeypadEqual;
         }
 
         private static void SetupMouseCursors()
         {
             MouseCursorMap.Clear();
-            MouseCursorMap[ImGuiMouseCursor.Arrow] = MouseCursor.MOUSE_CURSOR_ARROW;
-            MouseCursorMap[ImGuiMouseCursor.TextInput] = MouseCursor.MOUSE_CURSOR_IBEAM;
-            MouseCursorMap[ImGuiMouseCursor.Hand] = MouseCursor.MOUSE_CURSOR_POINTING_HAND;
-            MouseCursorMap[ImGuiMouseCursor.ResizeAll] = MouseCursor.MOUSE_CURSOR_RESIZE_ALL;
-            MouseCursorMap[ImGuiMouseCursor.ResizeEW] = MouseCursor.MOUSE_CURSOR_RESIZE_EW;
-            MouseCursorMap[ImGuiMouseCursor.ResizeNESW] = MouseCursor.MOUSE_CURSOR_RESIZE_NESW;
-            MouseCursorMap[ImGuiMouseCursor.ResizeNS] = MouseCursor.MOUSE_CURSOR_RESIZE_NS;
-            MouseCursorMap[ImGuiMouseCursor.ResizeNWSE] = MouseCursor.MOUSE_CURSOR_RESIZE_NWSE;
-            MouseCursorMap[ImGuiMouseCursor.NotAllowed] = MouseCursor.MOUSE_CURSOR_NOT_ALLOWED;
+            MouseCursorMap[ImGuiMouseCursor.Arrow] = MouseCursor.Arrow;
+            MouseCursorMap[ImGuiMouseCursor.TextInput] = MouseCursor.IBeam;
+            MouseCursorMap[ImGuiMouseCursor.Hand] = MouseCursor.PointingHand;
+            MouseCursorMap[ImGuiMouseCursor.ResizeAll] = MouseCursor.ResizeAll;
+            MouseCursorMap[ImGuiMouseCursor.ResizeEW] = MouseCursor.ResizeEw;
+            MouseCursorMap[ImGuiMouseCursor.ResizeNESW] = MouseCursor.ResizeNesw;
+            MouseCursorMap[ImGuiMouseCursor.ResizeNS] = MouseCursor.ResizeNs;
+            MouseCursorMap[ImGuiMouseCursor.ResizeNWSE] = MouseCursor.ResizeNesw;
+            MouseCursorMap[ImGuiMouseCursor.NotAllowed] = MouseCursor.NotAllowed;
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace rlImGui_cs
                 Width = width,
                 Height = height,
                 Mipmaps = 1,
-                Format = PixelFormat.PIXELFORMAT_UNCOMPRESSED_R8G8B8A8,
+                Format = PixelFormat.UncompressedR8G8B8A8,
             };
 
             if (Raylib.IsTextureReady(FontTexture))
@@ -355,7 +355,7 @@ namespace rlImGui_cs
 
             io.DisplayFramebufferScale = new Vector2(1, 1);
 
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) || Raylib.IsWindowState(ConfigFlags.FLAG_WINDOW_HIGHDPI))
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) || Raylib.IsWindowState(ConfigFlags.HighDpiWindow))
                     io.DisplayFramebufferScale = Raylib.GetWindowScaleDPI();
 
             io.DeltaTime = dt >= 0 ? dt : Raylib.GetFrameTime();
@@ -369,11 +369,11 @@ namespace rlImGui_cs
                 io.AddMousePosEvent(Raylib.GetMouseX(), Raylib.GetMouseY());
             }
 
-            SetMouseEvent(io, MouseButton.MOUSE_BUTTON_LEFT, ImGuiMouseButton.Left);
-            SetMouseEvent(io, MouseButton.MOUSE_BUTTON_RIGHT, ImGuiMouseButton.Right);
-            SetMouseEvent(io, MouseButton.MOUSE_BUTTON_MIDDLE, ImGuiMouseButton.Middle);
-            SetMouseEvent(io, MouseButton.MOUSE_BUTTON_FORWARD, ImGuiMouseButton.Middle + 1);
-            SetMouseEvent(io, MouseButton.MOUSE_BUTTON_BACK, ImGuiMouseButton.Middle + 2);
+            SetMouseEvent(io, MouseButton.Left, ImGuiMouseButton.Left);
+            SetMouseEvent(io, MouseButton.Right, ImGuiMouseButton.Right);
+            SetMouseEvent(io, MouseButton.Middle, ImGuiMouseButton.Middle);
+            SetMouseEvent(io, MouseButton.Forward, ImGuiMouseButton.Middle + 1);
+            SetMouseEvent(io, MouseButton.Back, ImGuiMouseButton.Middle + 2);
 
             var wheelMove = Raylib.GetMouseWheelMoveV();
             io.AddMouseWheelEvent(wheelMove.X, wheelMove.Y);
@@ -396,7 +396,7 @@ namespace rlImGui_cs
                         {
 
                             if (!MouseCursorMap.ContainsKey(imgui_cursor))
-                                Raylib.SetMouseCursor(MouseCursor.MOUSE_CURSOR_DEFAULT);
+                                Raylib.SetMouseCursor(MouseCursor.Default);
                             else
                                 Raylib.SetMouseCursor(MouseCursorMap[imgui_cursor]);
                         }
@@ -480,7 +480,7 @@ namespace rlImGui_cs
             ImGuiIOPtr io = ImGui.GetIO();
 
             Vector2 scale = new Vector2(1.0f, 1.0f);
-            if (Raylib.IsWindowState(ConfigFlags.FLAG_WINDOW_HIGHDPI) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            if (Raylib.IsWindowState(ConfigFlags.HighDpiWindow) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
                 scale = io.DisplayFramebufferScale;
 
             Rlgl.Scissor(   (int)(x * scale.X),
@@ -507,14 +507,14 @@ namespace rlImGui_cs
             if (texturePtr != IntPtr.Zero)
                 textureId = (uint)texturePtr.ToInt32();
 
-            Rlgl.Begin(DrawMode.TRIANGLES);
+            Rlgl.Begin(DrawMode.Triangles);
             Rlgl.SetTexture(textureId);
 
             for (int i = 0; i <= (count - 3); i += 3)
             {
                 if (Rlgl.CheckRenderBatchLimit(3))
                 {
-                    Rlgl.Begin(DrawMode.TRIANGLES);
+                    Rlgl.Begin(DrawMode.Triangles);
                     Rlgl.SetTexture(textureId);
                 }
 

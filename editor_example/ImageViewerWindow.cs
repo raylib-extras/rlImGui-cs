@@ -124,7 +124,7 @@ namespace editor_example
             {
                 if (CurrentToolMode == ToolMode.Move)
                 {
-                    if (Raylib.IsMouseButtonDown(MouseButton.MOUSE_LEFT_BUTTON))
+                    if (Raylib.IsMouseButtonDown(MouseButton.Left))
                     {
                         if (!Dragging)
                         {
@@ -163,9 +163,9 @@ namespace editor_example
         protected void UpdateRenderTexture()
         {
             Raylib.BeginTextureMode(ViewTexture);
-            Raylib.ClearBackground(Color.BLUE);
+            Raylib.ClearBackground(Color.Blue);
             Raylib.BeginMode2D(Camera);
-            Raylib.DrawTexture(ImageTexture, ImageTexture.Width / -2, ImageTexture.Height / -2, Color.WHITE);
+            Raylib.DrawTexture(ImageTexture, ImageTexture.Width / -2, ImageTexture.Height / -2, Color.White);
             Raylib.EndMode2D();
             Raylib.EndTextureMode();
         }

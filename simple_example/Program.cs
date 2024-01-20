@@ -23,7 +23,7 @@ namespace rlImGui_cs
     {
         static void Main(string[] args)
         {
-            Raylib.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT | ConfigFlags.FLAG_VSYNC_HINT | ConfigFlags.FLAG_WINDOW_RESIZABLE);
+            Raylib.SetConfigFlags(ConfigFlags.Msaa4xHint | ConfigFlags.VSyncHint | ConfigFlags.ResizableWindow);
             Raylib.InitWindow(1280, 800, "raylib-Extras-cs [ImGui] example - simple ImGui Demo");
             Raylib.SetTargetFPS(144);
 
@@ -32,7 +32,7 @@ namespace rlImGui_cs
             while (!Raylib.WindowShouldClose())
             {
                 Raylib.BeginDrawing();
-                Raylib.ClearBackground(Color.DARKGRAY);
+                Raylib.ClearBackground(Color.DarkGray);
 
                 rlImGui.Begin();
                 ImGui.ShowDemoWindow();

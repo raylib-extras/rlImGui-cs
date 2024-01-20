@@ -54,7 +54,7 @@ namespace editor_example
         static void Main(string[] args)
         {
 
-            Raylib.SetConfigFlags(ConfigFlags.FLAG_MSAA_4X_HINT | ConfigFlags.FLAG_VSYNC_HINT);
+            Raylib.SetConfigFlags(ConfigFlags.Msaa4xHint | ConfigFlags.VSyncHint);
             Raylib.InitWindow(1280, 800, "raylib-Extras-cs [ImGui] example - editor ImGui Demo");
             Raylib.SetTargetFPS(144);
 
@@ -76,7 +76,7 @@ namespace editor_example
                 SceneView.Update();
 
                 Raylib.BeginDrawing();
-                Raylib.ClearBackground(Color.DARKGRAY);
+                Raylib.ClearBackground(Color.DarkGray);
 
                 rlImGui.Begin();
                 DoMainMenu();

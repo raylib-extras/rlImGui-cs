@@ -22,12 +22,12 @@ namespace editor_example
             Camera.Position.Y = 3;
             Camera.Position.Z = -25;
 
-            Image img = Raylib.GenImageChecked(256, 256, 32, 32, Color.DARKGRAY, Color.WHITE);
+            Image img = Raylib.GenImageChecked(256, 256, 32, 32, Color.DarkGray, Color.White);
             GridTexture = Raylib.LoadTextureFromImage(img);
             Raylib.UnloadImage(img);
             Raylib.GenTextureMipmaps(ref GridTexture);
-            Raylib.SetTextureFilter(GridTexture, TextureFilter.TEXTURE_FILTER_ANISOTROPIC_16X);
-            Raylib.SetTextureWrap(GridTexture, TextureWrap.TEXTURE_WRAP_CLAMP);
+            Raylib.SetTextureFilter(GridTexture, TextureFilter.Anisotropic16X);
+            Raylib.SetTextureWrap(GridTexture, TextureWrap.Clamp);
         }
 
         public override void Shutdown()
@@ -70,12 +70,12 @@ namespace editor_example
             Camera.Position.X = (float)(Math.Sin(Raylib.GetTime() / period) * magnitude);
 
             Raylib.BeginTextureMode(ViewTexture);
-            Raylib.ClearBackground(Color.SKYBLUE);
+            Raylib.ClearBackground(Color.SkyBlue);
 
             Raylib.BeginMode3D(Camera);
 
             // grid of cube trees on a plane to make a "world"
-            Raylib.DrawPlane(new Vector3(0, 0, 0), new Vector2(50, 50), Color.BEIGE); // simple world plane
+            Raylib.DrawPlane(new Vector3(0, 0, 0), new Vector2(50, 50), Color.Beige); // simple world plane
             float spacing = 4;
             int count = 5;
 
@@ -87,8 +87,8 @@ namespace editor_example
                     Vector3 min = new Vector3(x - 0.5f, 0, z - 0.5f);
                     Vector3 max = new Vector3(x + 0.5f, 1, z + 0.5f);
 
-                    DrawCubeTexture(GridTexture, new Vector3(x, 1.5f, z), 1, 1, 1, Color.GREEN);
-                    DrawCubeTexture(GridTexture, new Vector3(x, 0.5f, z), 0.25f, 1, 0.25f, Color.BROWN);
+                    DrawCubeTexture(GridTexture, new Vector3(x, 1.5f, z), 1, 1, 1, Color.Green);
+                    DrawCubeTexture(GridTexture, new Vector3(x, 0.5f, z), 0.25f, 1, 0.25f, Color.Brown);
                 }
             }
 
@@ -122,7 +122,7 @@ namespace editor_example
             // Rlgl.rlRotatef(45, 0, 1, 0);
             // Rlgl.rlScalef(2.0f, 2.0f, 2.0f);
 
-            Rlgl.Begin(DrawMode.QUADS);
+            Rlgl.Begin(DrawMode.Quads);
             Rlgl.Color4ub(color.R, color.G, color.B, color.A);
 
             // Front Face
