@@ -177,7 +177,7 @@ namespace rlImGui_cs
             RaylibKeyMap[KeyboardKey.LeftControl] = ImGuiKey.LeftCtrl;
             RaylibKeyMap[KeyboardKey.LeftAlt] = ImGuiKey.LeftAlt;
             RaylibKeyMap[KeyboardKey.LeftSuper] = ImGuiKey.LeftSuper;
-            RaylibKeyMap[KeyboardKey.RightControl] = ImGuiKey.RightShift;
+            RaylibKeyMap[KeyboardKey.RightShift] = ImGuiKey.RightShift;
             RaylibKeyMap[KeyboardKey.RightControl] = ImGuiKey.RightCtrl;
             RaylibKeyMap[KeyboardKey.RightAlt] = ImGuiKey.RightAlt;
             RaylibKeyMap[KeyboardKey.RightSuper] = ImGuiKey.RightSuper;
@@ -215,7 +215,7 @@ namespace rlImGui_cs
             MouseCursorMap[ImGuiMouseCursor.ResizeEW] = MouseCursor.ResizeEw;
             MouseCursorMap[ImGuiMouseCursor.ResizeNESW] = MouseCursor.ResizeNesw;
             MouseCursorMap[ImGuiMouseCursor.ResizeNS] = MouseCursor.ResizeNs;
-            MouseCursorMap[ImGuiMouseCursor.ResizeNWSE] = MouseCursor.ResizeNesw;
+            MouseCursorMap[ImGuiMouseCursor.ResizeNWSE] = MouseCursor.ResizeNwse;
             MouseCursorMap[ImGuiMouseCursor.NotAllowed] = MouseCursor.NotAllowed;
         }
 
