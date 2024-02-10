@@ -276,15 +276,15 @@ namespace rlImGui_cs
             // remove this part if you don't want font awesome
             unsafe
             {
-                ImFontConfig icons_config = new ImFontConfig();
-                icons_config.MergeMode = 1;                      // merge the glyph ranges into the default font
-                icons_config.PixelSnapH = 1;                     // don't try to render on partial pixels
-                icons_config.FontDataOwnedByAtlas = 0;           // the font atlas does not own this font data
+                ImFontConfig* icons_config = ImGuiNative.ImFontConfig_ImFontConfig();
+                icons_config->MergeMode = 1;                      // merge the glyph ranges into the default font
+                icons_config->PixelSnapH = 1;                     // don't try to render on partial pixels
+                icons_config->FontDataOwnedByAtlas = 0;           // the font atlas does not own this font data
 
-                icons_config.GlyphMaxAdvanceX = float.MaxValue;
-                icons_config.RasterizerMultiply = 1.0f;
-                icons_config.OversampleH = 2;
-                icons_config.OversampleV = 1;
+                icons_config->GlyphMaxAdvanceX = float.MaxValue;
+                icons_config->RasterizerMultiply = 1.0f;
+                icons_config->OversampleH = 2;
+                icons_config->OversampleV = 1;
 
                 ushort[] IconRanges = new ushort[3];
                 IconRanges[0] = IconFonts.FontAwesome6.IconMin;
@@ -296,13 +296,13 @@ namespace rlImGui_cs
                     // this unmanaged memory must remain allocated for the entire run of rlImgui
                     IconFonts.FontAwesome6.IconFontRanges = Marshal.AllocHGlobal(6);
                     Buffer.MemoryCopy(range, IconFonts.FontAwesome6.IconFontRanges.ToPointer(), 6, 6);
-                    icons_config.GlyphRanges = (ushort*)IconFonts.FontAwesome6.IconFontRanges.ToPointer();
+                    icons_config->GlyphRanges = (ushort*)IconFonts.FontAwesome6.IconFontRanges.ToPointer();
 
                     byte[] fontDataBuffer = Convert.FromBase64String(IconFonts.FontAwesome6.IconFontData);
 
                     fixed (byte* buffer = fontDataBuffer)
                     {
-                        var fontPtr = ImGui.GetIO().Fonts.AddFontFromMemoryTTF(new IntPtr(buffer), fontDataBuffer.Length, 11, &icons_config, IconFonts.FontAwesome6.IconFontRanges);
+                        var fontPtr = ImGui.GetIO().Fonts.AddFontFromMemoryTTF(new IntPtr(buffer), fontDataBuffer.Length, 11, icons_config, IconFonts.FontAwesome6.IconFontRanges);
                     }
                 }
             }
