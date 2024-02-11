@@ -305,6 +305,8 @@ namespace rlImGui_cs
                         var fontPtr = ImGui.GetIO().Fonts.AddFontFromMemoryTTF(new IntPtr(buffer), fontDataBuffer.Length, 11, icons_config, IconFonts.FontAwesome6.IconFontRanges);
                     }
                 }
+
+                ImGuiNative.ImFontConfig_destroy(icons_config);
             }
 
             ImGuiIOPtr io = ImGui.GetIO();
