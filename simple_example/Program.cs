@@ -36,6 +36,12 @@ namespace rlImGui_cs
 
                 rlImGui.Begin();
                 ImGui.ShowDemoWindow();
+
+                if (ImGui.Begin("Simple Window"))
+                {
+                    ImGui.TextUnformatted("Icon text " + IconFonts.FontAwesome6.Book);
+                }
+                ImGui.End();
                 rlImGui.End();
 
                 Raylib.EndDrawing();
