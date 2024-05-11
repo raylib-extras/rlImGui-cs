@@ -57,17 +57,6 @@ namespace rlImGui_cs
         /// <param name="enableDocking">when true(not default) docking support will be enabled/param>
         public static void Setup(bool darkTheme = true, bool enableDocking = false)
         {
-            MouseCursorMap = new Dictionary<ImGuiMouseCursor, MouseCursor>();
-            MouseCursorMap = new Dictionary<ImGuiMouseCursor, MouseCursor>();
-
-            LastFrameFocused = Raylib.IsWindowFocused();
-            LastControlPressed = false;
-            LastShiftPressed = false;
-            LastAltPressed = false;
-            LastSuperPressed = false;
-
-            FontTexture.Id = 0;
-
             BeginInitImGui();
 
             if (darkTheme)
@@ -87,6 +76,16 @@ namespace rlImGui_cs
         /// </summary>
         public static void BeginInitImGui()
         {
+            MouseCursorMap = new Dictionary<ImGuiMouseCursor, MouseCursor>();
+
+            LastFrameFocused = Raylib.IsWindowFocused();
+            LastControlPressed = false;
+            LastShiftPressed = false;
+            LastAltPressed = false;
+            LastSuperPressed = false;
+
+            FontTexture.Id = 0;
+
             SetupKeymap();
 
             ImGuiContext = ImGui.CreateContext();
