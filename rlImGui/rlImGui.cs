@@ -24,6 +24,7 @@ namespace rlImGui_cs
     public static class rlImGui
     {
         internal static IntPtr ImGuiContext = IntPtr.Zero;
+        internal static nint iniFilenameAlloc = 0;
 
         private static ImGuiMouseCursor CurrentMouseCursor = ImGuiMouseCursor.COUNT;
         private static Dictionary<ImGuiMouseCursor, MouseCursor> MouseCursorMap = new Dictionary<ImGuiMouseCursor, MouseCursor>();
@@ -48,7 +49,7 @@ namespace rlImGui_cs
         /// <summary>
         /// Callback for cases where the user wants to install additional fonts.
         /// </summary>
-        public static SetupUserFontsCallback SetupUserFonts = null;
+        public static SetupUserFontsCallback SetupUserFonts = null!;
 
         /// <summary>
         /// Sets up ImGui, loads fonts and themes
@@ -68,6 +69,28 @@ namespace rlImGui_cs
                 ImGui.GetIO().ConfigFlags |= ImGuiConfigFlags.DockingEnable;
 
             EndInitImGui();
+        }
+
+        /// <summary>
+        /// Set the filename of the INI file that ImGui uses to store the window configuration.
+        /// It is set to "imgui.ini" by default.
+        ///
+        /// Call this after rlImGui.Setup.
+        /// </summary>
+        /// <param name="iniFilename">The file path to store the ini file.</param>
+        public static void SetIniFilename(string iniFilename)
+        {
+            if (iniFilenameAlloc != 0)
+                Marshal.FreeHGlobal(iniFilenameAlloc);
+
+            byte[] nameBytes = System.Text.Encoding.ASCII.GetBytes(iniFilename + "\0");
+            iniFilenameAlloc = Marshal.AllocHGlobal(nameBytes.Length);
+            Marshal.Copy(nameBytes, 0, iniFilenameAlloc, nameBytes.Length);
+            
+            unsafe
+            {
+                ImGui.GetIO().NativePtr->IniFilename = (byte*) iniFilenameAlloc;
+            }
         }
 
         /// <summary>
@@ -649,6 +672,9 @@ namespace rlImGui_cs
 
                 IconFonts.FontAwesome6.IconFontRanges = IntPtr.Zero;
             }
+
+            if (iniFilenameAlloc != 0)
+                Marshal.FreeHGlobal(iniFilenameAlloc);
         }
 
         /// <summary>
@@ -659,6 +685,22 @@ namespace rlImGui_cs
         public static void Image(Texture2D image)
         {
             ImGui.Image(new IntPtr(image.Id), new Vector2(image.Width, image.Height));
+        }
+
+        /// <summary>
+        /// Draw a texture as an image in an ImGui Context
+        /// Uses the current ImGui Cursor position and the full texture size.
+        /// </summary>
+        /// <param name="image">The raylib texture to draw</param>
+        /// <param name="tintColor">The color to tint the image with</param>
+        public static void Image(Texture2D image, Color tintColor)
+        {
+            ImGui.Image(
+                new IntPtr(image.Id),
+                new Vector2(image.Width, image.Height),
+                Vector2.Zero, Vector2.One,
+                new Vector4(tintColor.R / 255f, tintColor.G / 255f, tintColor.B / 255f, tintColor.A / 255f)
+            );
         }
 
         /// <summary>
@@ -723,6 +765,127 @@ namespace rlImGui_cs
             }
 
             ImGui.Image(new IntPtr(image.Id), new Vector2(destWidth, destHeight), uv0, uv1);
+        }
+
+        /// <summary>
+        /// Draw a portion texture as an image in an ImGui Context at a defined size
+        /// Uses the current ImGui Cursor position and the specified size
+        /// The image will be scaled up or down to fit as needed
+        /// </summary>
+        /// <param name="image">The raylib texture to draw</param>
+        /// <param name="destWidth">The width of the drawn image</param>
+        /// <param name="destHeight">The height of the drawn image</param>
+        /// <param name="sourceRect">The portion of the texture to draw as an image. Negative values for the width and height will flip the image</param>
+        /// <param name="tintColor">The color to tint the image with</param>
+        public static void ImageRect(Texture2D image, int destWidth, int destHeight, Rectangle sourceRect, Vector4 tintColor)
+        {
+            Vector2 uv0 = new Vector2();
+            Vector2 uv1 = new Vector2();
+
+            if (sourceRect.Width < 0)
+            {
+                uv0.X = -((float)sourceRect.X / image.Width);
+                uv1.X = (uv0.X - (float)(Math.Abs(sourceRect.Width) / image.Width));
+            }
+            else
+            {
+                uv0.X = (float)sourceRect.X / image.Width;
+                uv1.X = uv0.X + (float)(sourceRect.Width / image.Width);
+            }
+
+            if (sourceRect.Height < 0)
+            {
+                uv0.Y = -((float)sourceRect.Y / image.Height);
+                uv1.Y = (uv0.Y - (float)(Math.Abs(sourceRect.Height) / image.Height));
+            }
+            else
+            {
+                uv0.Y = (float)sourceRect.Y / image.Height;
+                uv1.Y = uv0.Y + (float)(sourceRect.Height / image.Height);
+            }
+
+            ImGui.Image(new IntPtr(image.Id), new Vector2(destWidth, destHeight), uv0, uv1, tintColor);
+        }
+
+        /// <summary>
+        /// Draw a portion texture as an image button in an ImGui Context at a defined size
+        /// Uses the current ImGui Cursor position and the specified size
+        /// The image will be scaled up or down to fit as needed
+        /// </summary>
+        /// <param name="id">The string ID of the image button</param>
+        /// <param name="image">The raylib texture to draw</param>
+        /// <param name="destWidth">The width of the drawn image</param>
+        /// <param name="destHeight">The height of the drawn image</param>
+        /// <param name="sourceRect">The portion of the texture to draw as an image. Negative values for the width and height will flip the image</param>
+        public static bool ImageButtonRect(string id, Texture2D image, int destWidth, int destHeight, Rectangle sourceRect)
+        {
+            Vector2 uv0 = new Vector2();
+            Vector2 uv1 = new Vector2();
+
+            if (sourceRect.Width < 0)
+            {
+                uv0.X = -((float)sourceRect.X / image.Width);
+                uv1.X = (uv0.X - (float)(Math.Abs(sourceRect.Width) / image.Width));
+            }
+            else
+            {
+                uv0.X = (float)sourceRect.X / image.Width;
+                uv1.X = uv0.X + (float)(sourceRect.Width / image.Width);
+            }
+
+            if (sourceRect.Height < 0)
+            {
+                uv0.Y = -((float)sourceRect.Y / image.Height);
+                uv1.Y = (uv0.Y - (float)(Math.Abs(sourceRect.Height) / image.Height));
+            }
+            else
+            {
+                uv0.Y = (float)sourceRect.Y / image.Height;
+                uv1.Y = uv0.Y + (float)(sourceRect.Height / image.Height);
+            }
+
+            return ImGui.ImageButton(id, new IntPtr(image.Id), new Vector2(destWidth, destHeight), uv0, uv1);
+        }
+
+        /// <summary>
+        /// Draw a portion texture as an image button in an ImGui Context at a defined size
+        /// Uses the current ImGui Cursor position and the specified size
+        /// The image will be scaled up or down to fit as needed
+        /// </summary>
+        /// <param name="id">The string ID of the image button</param>
+        /// <param name="image">The raylib texture to draw</param>
+        /// <param name="destWidth">The width of the drawn image</param>
+        /// <param name="destHeight">The height of the drawn image</param>
+        /// <param name="sourceRect">The portion of the texture to draw as an image. Negative values for the width and height will flip the image</param>
+        /// <param name="tintColor">The color to tint the image with</param>
+        public static bool ImageButtonRect(string id, Texture2D image, int destWidth, int destHeight, Rectangle sourceRect, Vector4 tintColor)
+        {
+            Vector2 uv0 = new Vector2();
+            Vector2 uv1 = new Vector2();
+
+            if (sourceRect.Width < 0)
+            {
+                uv0.X = -((float)sourceRect.X / image.Width);
+                uv1.X = (uv0.X - (float)(Math.Abs(sourceRect.Width) / image.Width));
+            }
+            else
+            {
+                uv0.X = (float)sourceRect.X / image.Width;
+                uv1.X = uv0.X + (float)(sourceRect.Width / image.Width);
+            }
+
+            if (sourceRect.Height < 0)
+            {
+                uv0.Y = -((float)sourceRect.Y / image.Height);
+                uv1.Y = (uv0.Y - (float)(Math.Abs(sourceRect.Height) / image.Height));
+            }
+            else
+            {
+                uv0.Y = (float)sourceRect.Y / image.Height;
+                uv1.Y = uv0.Y + (float)(sourceRect.Height / image.Height);
+            }
+
+            return ImGui.ImageButton(id, new IntPtr(image.Id), new Vector2(destWidth, destHeight), uv0, uv1, Vector4.Zero, tintColor);
         }
 
         /// <summary>
