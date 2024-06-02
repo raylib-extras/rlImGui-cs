@@ -259,6 +259,9 @@ namespace rlImGui_cs
         private unsafe delegate sbyte* GetClipTextCallback(IntPtr userData);
         private unsafe delegate void SetClipTextCallback(IntPtr userData, sbyte* text);
 
+        private static GetClipTextCallback getClipCallback = null!;
+        private static SetClipTextCallback setClipCallback = null!;
+
         /// <summary>
         /// End Custom initialization. Not needed if you call Setup. Only needed if you want to add custom setup code.
         /// must be proceeded by BeginInitImGui
@@ -321,11 +324,11 @@ namespace rlImGui_cs
             // copy/paste callbacks
             unsafe
             {
-                GetClipTextCallback getClip = new GetClipTextCallback(rImGuiGetClipText);
-                SetClipTextCallback setClip = new SetClipTextCallback(rlImGuiSetClipText);
+                getClipCallback = new GetClipTextCallback(rImGuiGetClipText);
+                setClipCallback = new SetClipTextCallback(rlImGuiSetClipText);
 
-                io.SetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(setClip);
-                io.GetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(getClip);
+                io.SetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(setClipCallback);
+                io.GetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(getClipCallback);
             }
 
             io.ClipboardUserData = IntPtr.Zero;
