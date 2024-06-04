@@ -17,6 +17,8 @@ namespace editor_example
         Vector2 LastTarget = new Vector2();
         bool Dragging = false;
 
+        Vector3 TintColor = new Vector3(1.0f, 1.0f, 1.0f);
+
         bool DirtyScene = false;
         enum ToolMode
         {
@@ -74,6 +76,14 @@ namespace editor_example
                     {
                         CurrentToolMode = ToolMode.Move;
                     }
+                    ImGui.SameLine();
+
+                    // temporarily reset window padding here so that the
+                    // color picker window doesn't look weird
+                    var windowPadding = ImGui.GetStyle().WindowPadding;
+                    ImGui.PopStyleVar();
+                    ImGui.ColorEdit3("Tint Color", ref TintColor, ImGuiColorEditFlags.NoInputs);
+                    ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, windowPadding);
 
                     ImGui.SameLine();
                     switch (CurrentToolMode)
@@ -89,11 +99,12 @@ namespace editor_example
                     }
 
                     ImGui.SameLine();
-                    ImGui.TextUnformatted(String.Format("camera target X%f Y%f", Camera.Target.X, Camera.Target.Y));
+                    ImGui.TextUnformatted(string.Format("camera target X{0} Y{1}", Camera.Target.X, Camera.Target.Y));
                     ImGui.EndChild();
                 }
 
-                rlImGui.ImageRect(ViewTexture.Texture, (int)size.X, (int)size.Y, viewRect);
+                var tintCol = new Color((int)(TintColor.X * 255) % 256, (int)(TintColor.Y * 255) % 256, (int)(TintColor.Z * 255) % 256, 255);
+                rlImGui.ImageRect(ViewTexture.Texture, (int)size.X, (int)size.Y, viewRect, tintCol);
 
                 ImGui.End();
             }

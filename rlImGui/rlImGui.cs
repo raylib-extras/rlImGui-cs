@@ -48,7 +48,7 @@ namespace rlImGui_cs
         /// <summary>
         /// Callback for cases where the user wants to install additional fonts.
         /// </summary>
-        public static SetupUserFontsCallback SetupUserFonts = null;
+        public static SetupUserFontsCallback SetupUserFonts = null!;
 
         /// <summary>
         /// Sets up ImGui, loads fonts and themes
@@ -259,6 +259,9 @@ namespace rlImGui_cs
         private unsafe delegate sbyte* GetClipTextCallback(IntPtr userData);
         private unsafe delegate void SetClipTextCallback(IntPtr userData, sbyte* text);
 
+        private static GetClipTextCallback getClipCallback = null!;
+        private static SetClipTextCallback setClipCallback = null!;
+
         /// <summary>
         /// End Custom initialization. Not needed if you call Setup. Only needed if you want to add custom setup code.
         /// must be proceeded by BeginInitImGui
@@ -321,11 +324,11 @@ namespace rlImGui_cs
             // copy/paste callbacks
             unsafe
             {
-                GetClipTextCallback getClip = new GetClipTextCallback(rImGuiGetClipText);
-                SetClipTextCallback setClip = new SetClipTextCallback(rlImGuiSetClipText);
+                getClipCallback = new GetClipTextCallback(rImGuiGetClipText);
+                setClipCallback = new SetClipTextCallback(rlImGuiSetClipText);
 
-                io.SetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(setClip);
-                io.GetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(getClip);
+                io.SetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(setClipCallback);
+                io.GetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(getClipCallback);
             }
 
             io.ClipboardUserData = IntPtr.Zero;
@@ -649,13 +652,42 @@ namespace rlImGui_cs
         }
 
         /// <summary>
+        /// Returns a Raylib color as as a Vector4
+        /// </summary>
+        /// <param name="color">The Raylib color to convert to a Vector4</param>
+        private static Vector4 ColorVec4(Color color)
+            => new(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
+        
+        /// <summary>
         /// Draw a texture as an image in an ImGui Context
         /// Uses the current ImGui Cursor position and the full texture size.
         /// </summary>
         /// <param name="image">The raylib texture to draw</param>
-        public static void Image(Texture2D image)
+        /// <param name="tintColor">The color to tint the image with</param>
+        public static void Image(Texture2D image, Color tintColor)
         {
-            ImGui.Image(new IntPtr(image.Id), new Vector2(image.Width, image.Height));
+            ImGui.Image(new IntPtr(image.Id), new Vector2(image.Width, image.Height), Vector2.Zero, Vector2.One, ColorVec4(tintColor));
+        }
+
+        /// <summary>
+        /// Draw a texture as an image in an ImGui Context
+        /// Uses the current ImGui Cursor position and the full texture size.
+        /// </summary>
+        /// <param name="image">The raylib texture to draw</param>
+        public static void Image(Texture2D image) => Image(image, Color.White);
+
+        /// <summary>
+        /// Draw a texture as an image in an ImGui Context at a specific size
+        /// Uses the current ImGui Cursor position and the specified width and height
+        /// The image will be scaled up or down to fit as needed
+        /// </summary>
+        /// <param name="image">The raylib texture to draw</param>
+        /// <param name="width">The width of the drawn image</param>
+        /// <param name="height">The height of the drawn image</param>
+        /// <param name="tintColor">The color to tint the image with</param>
+        public static void ImageSize(Texture2D image, int width, int height, Color tintColor)
+        {
+            ImGui.Image(new IntPtr(image.Id), new Vector2(width, height), Vector2.Zero, Vector2.One, ColorVec4(tintColor));
         }
 
         /// <summary>
@@ -667,8 +699,19 @@ namespace rlImGui_cs
         /// <param name="width">The width of the drawn image</param>
         /// <param name="height">The height of the drawn image</param>
         public static void ImageSize(Texture2D image, int width, int height)
+            => ImageSize(image, width, height, Color.White);
+
+        /// <summary>
+        /// Draw a texture as an image in an ImGui Context at a specific size
+        /// Uses the current ImGui Cursor position and the specified size
+        /// The image will be scaled up or down to fit as needed
+        /// </summary>
+        /// <param name="image">The raylib texture to draw</param>
+        /// <param name="size">The size of drawn image</param>
+        /// <param name="tintColor">The color to tint the image with</param>
+        public static void ImageSize(Texture2D image, Vector2 size, Color tintColor)
         {
-            ImGui.Image(new IntPtr(image.Id), new Vector2(width, height));
+            ImGui.Image(new IntPtr(image.Id), size, Vector2.Zero, Vector2.One, ColorVec4(tintColor));
         }
 
         /// <summary>
@@ -679,24 +722,14 @@ namespace rlImGui_cs
         /// <param name="image">The raylib texture to draw</param>
         /// <param name="size">The size of drawn image</param>
         public static void ImageSize(Texture2D image, Vector2 size)
-        {
-            ImGui.Image(new IntPtr(image.Id), size);
-        }
+            => ImageSize(image, size, Color.White);
 
         /// <summary>
-        /// Draw a portion texture as an image in an ImGui Context at a defined size
-        /// Uses the current ImGui Cursor position and the specified size
-        /// The image will be scaled up or down to fit as needed
+        /// Internal helper function used to obtain the texture coordinates of a rectangle within
+        /// an image
         /// </summary>
-        /// <param name="image">The raylib texture to draw</param>
-        /// <param name="destWidth">The width of the drawn image</param>
-        /// <param name="destHeight">The height of the drawn image</param>
-        /// <param name="sourceRect">The portion of the texture to draw as an image. Negative values for the width and height will flip the image</param>
-        public static void ImageRect(Texture2D image, int destWidth, int destHeight, Rectangle sourceRect)
+        private static void GetTexCoords(Texture2D image, Rectangle sourceRect, out Vector2 uv0, out Vector2 uv1)
         {
-            Vector2 uv0 = new Vector2();
-            Vector2 uv1 = new Vector2();
-
             if (sourceRect.Width < 0)
             {
                 uv0.X = -((float)sourceRect.X / image.Width);
@@ -718,8 +751,76 @@ namespace rlImGui_cs
                 uv0.Y = (float)sourceRect.Y / image.Height;
                 uv1.Y = uv0.Y + (float)(sourceRect.Height / image.Height);
             }
+        }
 
-            ImGui.Image(new IntPtr(image.Id), new Vector2(destWidth, destHeight), uv0, uv1);
+        /// <summary>
+        /// Draw a portion texture as an image in an ImGui Context at a defined size
+        /// Uses the current ImGui Cursor position and the specified size
+        /// The image will be scaled up or down to fit as needed
+        /// </summary>
+        /// <param name="image">The raylib texture to draw</param>
+        /// <param name="destWidth">The width of the drawn image</param>
+        /// <param name="destHeight">The height of the drawn image</param>
+        /// <param name="sourceRect">The portion of the texture to draw as an image. Negative values for the width and height will flip the image</param>
+        /// <param name="tintColor">The color to tint the image with</param>
+        public static void ImageRect(Texture2D image, int destWidth, int destHeight, Rectangle sourceRect, Color tintColor)
+        {
+            GetTexCoords(image, sourceRect, out Vector2 uv0, out Vector2 uv1);
+            ImGui.Image(new IntPtr(image.Id), new Vector2(destWidth, destHeight), uv0, uv1, ColorVec4(tintColor));
+        }
+
+        /// <summary>
+        /// Draw a portion texture as an image in an ImGui Context at a defined size
+        /// Uses the current ImGui Cursor position and the specified size
+        /// The image will be scaled up or down to fit as needed
+        /// </summary>
+        /// <param name="image">The raylib texture to draw</param>
+        /// <param name="destWidth">The width of the drawn image</param>
+        /// <param name="destHeight">The height of the drawn image</param>
+        /// <param name="sourceRect">The portion of the texture to draw as an image. Negative values for the width and height will flip the image</param>
+        public static void ImageRect(Texture2D image, int destWidth, int destHeight, Rectangle sourceRect)
+            => ImageRect(image, destWidth, destHeight, sourceRect, Color.White);
+
+        /// <summary>
+        /// Draw a portion texture as an image button in an ImGui Context at a defined size
+        /// Uses the current ImGui Cursor position and the specified size
+        /// The image will be scaled up or down to fit as needed
+        /// </summary>
+        /// <param name="id">The string ID of the image button</param>
+        /// <param name="image">The raylib texture to draw</param>
+        /// <param name="destWidth">The width of the drawn image</param>
+        /// <param name="destHeight">The height of the drawn image</param>
+        /// <param name="sourceRect">The portion of the texture to draw as an image. Negative values for the width and height will flip the image</param>
+        /// <param name="tintColor">The color to tint the image with</param>
+        /// <returns>True if the button was clicked</returns>
+        public static bool ImageButtonRect(string id, Texture2D image, int destWidth, int destHeight, Rectangle sourceRect, Color tintColor)
+        {
+            GetTexCoords(image, sourceRect, out Vector2 uv0, out Vector2 uv1);
+            return ImGui.ImageButton(id, new IntPtr(image.Id), new Vector2(destWidth, destHeight), uv0, uv1, ColorVec4(tintColor));
+        }
+
+        /// <summary>
+        /// Draw a portion texture as an image button in an ImGui Context at a defined size
+        /// Uses the current ImGui Cursor position and the specified size
+        /// The image will be scaled up or down to fit as needed
+        /// </summary>
+        /// <param name="id">The string ID of the image button</param>
+        /// <param name="image">The raylib texture to draw</param>
+        /// <param name="destWidth">The width of the drawn image</param>
+        /// <param name="destHeight">The height of the drawn image</param>
+        /// <param name="sourceRect">The portion of the texture to draw as an image. Negative values for the width and height will flip the image</param>
+        /// <returns>True if the button was clicked</returns>
+        public static bool ImageButtonRect(string id, Texture2D image, int destWidth, int destHeight, Rectangle sourceRect)
+            => ImageButtonRect(id, image, destWidth, destHeight, sourceRect, Color.White);
+
+        /// <summary>
+        /// Draws a render texture as an image an ImGui Context, automatically flipping the Y axis so it will show correctly on screen
+        /// </summary>
+        /// <param name="image">The render texture to draw</param>
+        /// <param name="tintColor">The color to tint the image with</param>
+        public static void ImageRenderTexture(RenderTexture2D image, Color tintColor)
+        {
+            ImageRect(image.Texture, image.Texture.Width, image.Texture.Height, new Rectangle(0, 0, image.Texture.Width, -image.Texture.Height), tintColor);
         }
 
         /// <summary>
@@ -727,9 +828,7 @@ namespace rlImGui_cs
         /// </summary>
         /// <param name="image">The render texture to draw</param>
         public static void ImageRenderTexture(RenderTexture2D image)
-        {
-            ImageRect(image.Texture, image.Texture.Width, image.Texture.Height, new Rectangle(0, 0, image.Texture.Width, -image.Texture.Height));
-        }
+            => ImageRenderTexture(image, Color.White);
 
         /// <summary>
         /// Draws a render texture as an image to the current ImGui Context, flipping the Y axis so it will show correctly on the screen
@@ -737,7 +836,8 @@ namespace rlImGui_cs
         /// </summary>
         /// <param name="image">The render texture to draw</param>
         /// <param name="center">When true the texture will be centered in the content area. When false the image will be left and top justified</param>
-        public static void ImageRenderTextureFit(RenderTexture2D image, bool center = true)
+        /// <param name="tintColor">The color to tint the image with</param>
+        public static void ImageRenderTextureFit(RenderTexture2D image, Color tintColor, bool center = true)
         {
             Vector2 area = ImGui.GetContentRegionAvail();
 
@@ -759,7 +859,28 @@ namespace rlImGui_cs
                 ImGui.SetCursorPosY(ImGui.GetCursorPosY() + (area.Y / 2 - sizeY / 2));
             }
 
-            ImageRect(image.Texture, sizeX, sizeY, new Rectangle(0,0, (image.Texture.Width), -(image.Texture.Height) ));
+            ImageRect(image.Texture, sizeX, sizeY, new Rectangle(0,0, (image.Texture.Width), -(image.Texture.Height) ), tintColor);
+        }
+
+        /// <summary>
+        /// Draws a render texture as an image to the current ImGui Context, flipping the Y axis so it will show correctly on the screen
+        /// The texture will be scaled to fit the content are available, centered if desired
+        /// </summary>
+        /// <param name="image">The render texture to draw</param>
+        /// <param name="center">When true the texture will be centered in the content area. When false the image will be left and top justified</param>
+        public static void ImageRenderTextureFit(RenderTexture2D image, bool center = true)
+            => ImageRenderTextureFit(image, Color.White, center);
+
+        /// <summary>
+        /// Draws a texture as an image button in an ImGui context. Uses the current ImGui cursor position and the full size of the texture
+        /// </summary>
+        /// <param name="name">The display name and ImGui ID for the button</param>
+        /// <param name="image">The texture to draw</param>
+        /// <param name="tintColor">The color to tint the image with</param>
+        /// <returns>True if the button was clicked</returns>
+        public static bool ImageButton(System.String name, Texture2D image, Color tintColor)
+        {
+            return ImageButtonSize(name, image, new Vector2(image.Width, image.Height), tintColor);
         }
 
         /// <summary>
@@ -769,8 +890,19 @@ namespace rlImGui_cs
         /// <param name="image">The texture to draw</param>
         /// <returns>True if the button was clicked</returns>
         public static bool ImageButton(System.String name, Texture2D image)
+            => ImageButton(name, image, Color.White);
+
+        /// <summary>
+        /// Draws a texture as an image button in an ImGui context. Uses the current ImGui cursor position and the specified size.
+        /// </summary>
+        /// <param name="name">The display name and ImGui ID for the button</param>
+        /// <param name="image">The texture to draw</param>
+        /// <param name="size">The size of the button/param>
+        /// <param name="tintColor">The color to tint the image with</param>
+        /// <returns>True if the button was clicked</returns>
+        public static bool ImageButtonSize(System.String name, Texture2D image, Vector2 size, Color tintColor)
         {
-            return ImageButtonSize(name, image, new Vector2(image.Width, image.Height));
+            return ImGui.ImageButton(name, new IntPtr(image.Id), size, Vector2.Zero, Vector2.One, ColorVec4(tintColor));
         }
 
         /// <summary>
@@ -781,9 +913,6 @@ namespace rlImGui_cs
         /// <param name="size">The size of the button/param>
         /// <returns>True if the button was clicked</returns>
         public static bool ImageButtonSize(System.String name, Texture2D image, Vector2 size)
-        {
-            return ImGui.ImageButton(name, new IntPtr(image.Id), size);
-        }
-
+            => ImageButtonSize(name, image, size);
     }
 }
