@@ -24,7 +24,6 @@ namespace rlImGui_cs
     public static class rlImGui
     {
         internal static IntPtr ImGuiContext = IntPtr.Zero;
-        internal static nint iniFilenameAlloc = 0;
 
         private static ImGuiMouseCursor CurrentMouseCursor = ImGuiMouseCursor.COUNT;
         private static Dictionary<ImGuiMouseCursor, MouseCursor> MouseCursorMap = new Dictionary<ImGuiMouseCursor, MouseCursor>();
@@ -69,28 +68,6 @@ namespace rlImGui_cs
                 ImGui.GetIO().ConfigFlags |= ImGuiConfigFlags.DockingEnable;
 
             EndInitImGui();
-        }
-
-        /// <summary>
-        /// Set the filename of the INI file that ImGui uses to store the window configuration.
-        /// It is set to "imgui.ini" by default.
-        ///
-        /// Call this after rlImGui.Setup.
-        /// </summary>
-        /// <param name="iniFilename">The file path to store the ini file.</param>
-        public static void SetIniFilename(string iniFilename)
-        {
-            if (iniFilenameAlloc != 0)
-                Marshal.FreeHGlobal(iniFilenameAlloc);
-
-            byte[] nameBytes = System.Text.Encoding.ASCII.GetBytes(iniFilename + "\0");
-            iniFilenameAlloc = Marshal.AllocHGlobal(nameBytes.Length);
-            Marshal.Copy(nameBytes, 0, iniFilenameAlloc, nameBytes.Length);
-            
-            unsafe
-            {
-                ImGui.GetIO().NativePtr->IniFilename = (byte*) iniFilenameAlloc;
-            }
         }
 
         /// <summary>
@@ -672,9 +649,6 @@ namespace rlImGui_cs
 
                 IconFonts.FontAwesome6.IconFontRanges = IntPtr.Zero;
             }
-
-            if (iniFilenameAlloc != 0)
-                Marshal.FreeHGlobal(iniFilenameAlloc);
         }
 
         /// <summary>
