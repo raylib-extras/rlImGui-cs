@@ -312,6 +312,8 @@ namespace rlImGui_cs
 
             ImGuiIOPtr io = ImGui.GetIO();
 
+            ImGuiPlatformIOPtr platformIO = ImGui.GetPlatformIO();
+
             if (SetupUserFonts != null)
                 SetupUserFonts(io);
 
@@ -324,13 +326,13 @@ namespace rlImGui_cs
             unsafe
             {
                 SetClipCallback = new SetClipTextCallback(rlImGuiSetClipText);
-                io.SetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(SetClipCallback);
+                platformIO.Platform_SetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(SetClipCallback);
 
                 GetClipCallback = new GetClipTextCallback(rImGuiGetClipText);
-                io.GetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(GetClipCallback);
+                platformIO.Platform_GetClipboardTextFn = Marshal.GetFunctionPointerForDelegate(GetClipCallback);
             }
 
-            io.ClipboardUserData = IntPtr.Zero;
+            platformIO.Platform_ClipboardUserData = IntPtr.Zero;
             ReloadFonts();
         }
 

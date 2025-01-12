@@ -1,4 +1,4 @@
-# rlImGui-cs (raylib cs 6.0 compatible version, WIP)
+# rlImGui-cs (raylib cs 7.0 compatible version)
 <img align="left" src="https://github.com/raysan5/raylib/raw/master/logo/raylib_logo_animation.gif" width="64">
 A Raylib-cs integration with DearImGui
 
@@ -10,8 +10,8 @@ rlImGui-cs is is a shared library that uses raylib-cs and ImGui.Net
 # Dependencies
 This library is dependent on two other packages.
 
-Raylib-cs (v 6.0.0)
-ImGui.NET (v 1.90.1.1)
+Raylib-cs (v 7.0.0)
+ImGui.NET (v 1.91.6.1)
 
 # Setup
 
@@ -61,16 +61,3 @@ rlImGui.ImageRenderTexture(RenderTexture2D image);
 rlImGui.ImageButton(System.String name, Texture2D image);
 rlImGui.ImageButtonSize(System.String name, Texture2D image, Vector2 size);
 ```
-
-# Changelist
-
-## v1.0.2.0
-* Comment public API
-* Optional Delta Time argument for new frame
-* Image Buttons
-* Render Texture drawing functiona
-
-## v1.0.0.1
-* Inital nuget package.
-* Update to current ImGui
-* Include FontAwesome
