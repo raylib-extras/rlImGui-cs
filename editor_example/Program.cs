@@ -51,13 +51,18 @@ namespace editor_example
             }
         }
 
+        static ImFontPtr DejaFont = null;
+
         static void Main(string[] args)
         {
-
             Raylib.SetConfigFlags(ConfigFlags.Msaa4xHint | ConfigFlags.VSyncHint);
             Raylib.InitWindow(1280, 800, "raylib-Extras-cs [ImGui] example - editor ImGui Demo");
             Raylib.SetTargetFPS(144);
 
+            rlImGui.SetupUserFonts += (ImGuiIOPtr imGuiIo) =>
+            {
+                DejaFont = ImGui.GetIO().Fonts.AddFontFromFileTTF("resources/DejaVuSerif-Bold.ttf", 16);
+            };
             rlImGui.Setup(true, true);
 
             ImGui.GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
@@ -89,6 +94,14 @@ namespace editor_example
 
                 if (SceneView.Open)
                     SceneView.Show();
+
+                if (ImGui.Begin("Font Window"))
+                {
+                    ImGui.PushFont(DejaFont);
+                    ImGui.TextUnformatted("This is in a different font");
+                    ImGui.PopFont();
+                }
+                ImGui.End();
 
                 rlImGui.End();
 
