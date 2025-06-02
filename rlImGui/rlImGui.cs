@@ -261,6 +261,10 @@ namespace rlImGui_cs
 
         private static GetClipTextCallback GetClipCallback = null!;
         private static SetClipTextCallback SetClipCallback = null!;
+
+        public static bool LoadDefaultFont = true;
+        public static bool LoadFontAwesome = true;
+
         /// <summary>
         /// End Custom initialization. Not needed if you call Setup. Only needed if you want to add custom setup code.
         /// must be proceeded by BeginInitImGui
@@ -272,42 +276,47 @@ namespace rlImGui_cs
             ImGui.SetCurrentContext(ImGuiContext);
 
             var fonts = ImGui.GetIO().Fonts;
-            ImGui.GetIO().Fonts.AddFontDefault();
 
-            // remove this part if you don't want font awesome
-            unsafe
+            if (LoadDefaultFont)
+                ImGui.GetIO().Fonts.AddFontDefault();
+
+            if (LoadFontAwesome)
             {
-                ImFontConfig* icons_config = ImGuiNative.ImFontConfig_ImFontConfig();
-                icons_config->MergeMode = 1;                      // merge the glyph ranges into the default font
-                icons_config->PixelSnapH = 1;                     // don't try to render on partial pixels
-                icons_config->FontDataOwnedByAtlas = 0;           // the font atlas does not own this font data
-
-                icons_config->GlyphMaxAdvanceX = float.MaxValue;
-                icons_config->RasterizerMultiply = 1.0f;
-                icons_config->OversampleH = 2;
-                icons_config->OversampleV = 1;
-
-                ushort[] IconRanges = new ushort[3];
-                IconRanges[0] = IconFonts.FontAwesome6.IconMin;
-                IconRanges[1] = IconFonts.FontAwesome6.IconMax;
-                IconRanges[2] = 0;
-
-                fixed (ushort* range = &IconRanges[0])
+                // remove this part if you don't want font awesome
+                unsafe
                 {
-                    // this unmanaged memory must remain allocated for the entire run of rlImgui
-                    IconFonts.FontAwesome6.IconFontRanges = Marshal.AllocHGlobal(6);
-                    Buffer.MemoryCopy(range, IconFonts.FontAwesome6.IconFontRanges.ToPointer(), 6, 6);
-                    icons_config->GlyphRanges = (ushort*)IconFonts.FontAwesome6.IconFontRanges.ToPointer();
+                    ImFontConfig* icons_config = ImGuiNative.ImFontConfig_ImFontConfig();
+                    icons_config->MergeMode = 1;                      // merge the glyph ranges into the default font
+                    icons_config->PixelSnapH = 1;                     // don't try to render on partial pixels
+                    icons_config->FontDataOwnedByAtlas = 0;           // the font atlas does not own this font data
 
-                    byte[] fontDataBuffer = Convert.FromBase64String(IconFonts.FontAwesome6.IconFontData);
+                    icons_config->GlyphMaxAdvanceX = float.MaxValue;
+                    icons_config->RasterizerMultiply = 1.0f;
+                    icons_config->OversampleH = 2;
+                    icons_config->OversampleV = 1;
 
-                    fixed (byte* buffer = fontDataBuffer)
+                    ushort[] IconRanges = new ushort[3];
+                    IconRanges[0] = IconFonts.FontAwesome6.IconMin;
+                    IconRanges[1] = IconFonts.FontAwesome6.IconMax;
+                    IconRanges[2] = 0;
+
+                    fixed (ushort* range = &IconRanges[0])
                     {
-                        var fontPtr = ImGui.GetIO().Fonts.AddFontFromMemoryTTF(new IntPtr(buffer), fontDataBuffer.Length, 11, icons_config, IconFonts.FontAwesome6.IconFontRanges);
-                    }
-                }
+                        // this unmanaged memory must remain allocated for the entire run of rlImgui
+                        IconFonts.FontAwesome6.IconFontRanges = Marshal.AllocHGlobal(6);
+                        Buffer.MemoryCopy(range, IconFonts.FontAwesome6.IconFontRanges.ToPointer(), 6, 6);
+                        icons_config->GlyphRanges = (ushort*)IconFonts.FontAwesome6.IconFontRanges.ToPointer();
 
-                ImGuiNative.ImFontConfig_destroy(icons_config);
+                        byte[] fontDataBuffer = Convert.FromBase64String(IconFonts.FontAwesome6.IconFontData);
+
+                        fixed (byte* buffer = fontDataBuffer)
+                        {
+                            var fontPtr = ImGui.GetIO().Fonts.AddFontFromMemoryTTF(new IntPtr(buffer), fontDataBuffer.Length, 11, icons_config, IconFonts.FontAwesome6.IconFontRanges);
+                        }
+                    }
+
+                    ImGuiNative.ImFontConfig_destroy(icons_config);
+                }
             }
 
             ImGuiIOPtr io = ImGui.GetIO();
@@ -643,12 +652,14 @@ namespace rlImGui_cs
             Raylib.UnloadTexture(FontTexture);
             ImGui.DestroyContext();
 
-            // remove this if you don't want font awesome support
+            if (LoadFontAwesome)
             {
-                if (IconFonts.FontAwesome6.IconFontRanges != IntPtr.Zero)
-                    Marshal.FreeHGlobal(IconFonts.FontAwesome6.IconFontRanges);
+                {
+                    if (IconFonts.FontAwesome6.IconFontRanges != IntPtr.Zero)
+                        Marshal.FreeHGlobal(IconFonts.FontAwesome6.IconFontRanges);
 
-                IconFonts.FontAwesome6.IconFontRanges = IntPtr.Zero;
+                    IconFonts.FontAwesome6.IconFontRanges = IntPtr.Zero;
+                }
             }
         }
 
